@@ -1,3 +1,4 @@
+using Frock_backend.IAM.Application.Internal.QueryServices;
 using Frock_backend.IAM.Domain.Model.Aggregates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -31,7 +32,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         }
 
         // verify if a user is signed in by checking if HttpContext.User is set
-        var user = (User?)context.HttpContext.Items["User"];
+        var user = (int)context.HttpContext.Items["User"];
 
         // if a user is not signed in, then return 401-status code
         if (user == null) context.Result = new UnauthorizedResult();

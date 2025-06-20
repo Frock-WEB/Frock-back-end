@@ -10,11 +10,6 @@ using Frock_backend.IAM.Infrastructure.Tokens.JWT.Configuration;
 using Frock_backend.IAM.Infrastructure.Tokens.JWT.Services;
 using Frock_backend.IAM.Interfaces.ACL;
 using Frock_backend.IAM.Interfaces.ACL.Services;
-using Frock_backend.Profiles.Application.Internal.CommandServices;
-using Frock_backend.Profiles.Application.Internal.QueryServices;
-using Frock_backend.Profiles.Domain.Repositories;
-using Frock_backend.Profiles.Domain.Services;
-using Frock_backend.Profiles.Infrastructure.Persistence.EFC.Repositories;
 using Frock_backend.Shared.Domain.Repositories;
 using Frock_backend.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -103,11 +98,6 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-// Profiles Bounded Context Dependency Injection Configuration
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
-builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 
 
 // IAM Bounded Context Injection Configuration

@@ -2,7 +2,6 @@
 using Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using Frock_backend.Profiles.Domain.Model.Aggregates;
 using Frock_backend.IAM.Domain.Model.Aggregates;
 
 namespace Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration
@@ -38,36 +37,6 @@ namespace Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            // Profiles Context
-
-            builder.Entity<Profile>().HasKey(p => p.Id);
-            builder.Entity<Profile>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Profile>().OwnsOne(p => p.Name,
-                n =>
-                {
-                    n.WithOwner().HasForeignKey("Id");
-                    n.Property(p => p.FirstName).HasColumnName("FirstName");
-                    n.Property(p => p.LastName).HasColumnName("LastName");
-                });
-
-            builder.Entity<Profile>().OwnsOne(p => p.Email,
-            e =>
-            {
-                    e.WithOwner().HasForeignKey("Id");
-                    e.Property(a => a.Address).HasColumnName("EmailAddress");
-                });
-
-            builder.Entity<Profile>().OwnsOne(p => p.Address,
-                a =>
-                {
-                    a.WithOwner().HasForeignKey("Id");
-                    a.Property(s => s.Street).HasColumnName("AddressStreet");
-                    a.Property(s => s.Number).HasColumnName("AddressNumber");
-                    a.Property(s => s.City).HasColumnName("AddressCity");
-                    a.Property(s => s.PostalCode).HasColumnName("AddressPostalCode");
-                    a.Property(s => s.Country).HasColumnName("AddressCountry");
-                });
 
             // IAM Context
 

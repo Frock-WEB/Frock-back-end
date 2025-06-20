@@ -10,16 +10,30 @@ namespace Frock_backend.IAM.Domain.Model.Aggregates;
  *     This class is used to represent a user
  * </remarks>
  */
-public class User(string username, string passwordHash)
+public class User(string email, string username, string passwordHash)
 {
-    public User() : this(string.Empty, string.Empty)
+    public User() : this(string.Empty, string.Empty, string.Empty)
     {
     }
 
     public int Id { get; }
+    public string Email { get; private set; } = email;
     public string Username { get; private set; } = username;
 
     [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;
+
+    /**
+     * <summary>
+     *     Update the email
+     * </summary>
+     * <param name="email">The new email</param>
+     * <returns>The updated user</returns>
+     */
+    public User UpdateEmail(string email)
+    {
+        Email = email;
+        return this;
+    }
 
     /**
      * <summary>

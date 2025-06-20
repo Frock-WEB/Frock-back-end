@@ -1,3 +1,9 @@
 namespace Frock_backend.IAM.Interfaces.REST.Resources;
 
-public record SignUpResource(string Username, string Password);
+
+public class SignUpResource
+{
+    public string Username { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
