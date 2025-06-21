@@ -14,7 +14,8 @@ namespace Frock_backend.routes.REST.Transform
                 resource.Schedules.Select(schedule => new Schedule(
                     schedule.StartTime,
                     schedule.EndTime,
-                    schedule.DayOfWeek
+                    schedule.DayOfWeek,
+                    schedule.Enabled
                 )).ToList()
             );
     }

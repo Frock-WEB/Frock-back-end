@@ -2,7 +2,8 @@
 {
     public record CreateScheduleResource(
         string DayOfWeek,
-        DateTime StartTime,
-        DateTime EndTime
+        string StartTime,
+        string EndTime,
+        bool Enabled
         );
 }

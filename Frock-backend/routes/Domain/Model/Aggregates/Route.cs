@@ -19,9 +19,9 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
             this.Frequency = Frequency;
         }
         // 3) Método para añadir un horario
-        public void AddSchedule(DateTime start, DateTime end, string dayOfWeek)
+        public void AddSchedule(string start, string end, string dayOfWeek, bool enabled)
         {
-            Schedules.Add(new Schedule( start, end, dayOfWeek));
+            Schedules.Add(new Schedule( start, end, dayOfWeek, enabled));
         }
 
         // Renamed the method to avoid conflict with the class name
@@ -39,7 +39,7 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
             }
             foreach (var schedule in cm.Schedules)
             {
-                this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek);
+                this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, schedule.Enabled);
             }
         }
     }

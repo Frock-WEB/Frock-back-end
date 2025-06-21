@@ -129,7 +129,6 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 });
             }
             );
-
             // 4) Schedule
             builder.Entity<Schedule>(b =>
             {
