@@ -23,7 +23,7 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         // 3) Método para añadir un horario
         public void AddSchedule(DateTime start, DateTime end, string dayOfWeek)
         {
-            Schedules.Add(new Schedule(this.Id, start, end, dayOfWeek));
+            Schedules.Add(new Schedule( start, end, dayOfWeek));
         }
 
         // Renamed the method to avoid conflict with the class name
