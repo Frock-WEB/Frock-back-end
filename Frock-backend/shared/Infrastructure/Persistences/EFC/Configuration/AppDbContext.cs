@@ -70,7 +70,6 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             //STOP
             builder.Entity<Stop>().HasKey(f => f.Id);
             builder.Entity<Stop>().Property(f => f.Id).IsRequired().ValueGeneratedOnAdd();

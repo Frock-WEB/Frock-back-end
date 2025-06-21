@@ -23,8 +23,6 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         {
             Schedules.Add(new Schedule( start, end, dayOfWeek, enabled));
         }
-
-        // Renamed the method to avoid conflict with the class name
         public RouteAggregate(CreateFullRouteCommand cm)
         {
             this.Price = cm.Price;
@@ -40,6 +38,24 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
             foreach (var schedule in cm.Schedules)
             {
                 this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, schedule.Enabled);
+            }
+        }
+        public RouteAggregate(UpdateRouteCommand cm)
+        {
+            this.Id = cm.IdRoute;
+            this.Price = cm.Price;
+            this.Duration = cm.Duration;
+            this.Frequency = cm.Frequency;
+            foreach (var stopId in cm.StopsIds)
+            {
+                // Assuming RoutesStops is a value object that holds the stop ID
+                var routeStop = new RoutesStops(stopId);
+                // Here you would typically add this to a collection of stops in the Route aggregate
+                this.Stops.Add(routeStop);
+            }
+            foreach (var schedule in cm.Schedules)
+            {
+                this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, true);
             }
         }
     }
