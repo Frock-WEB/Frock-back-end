@@ -5,18 +5,17 @@ namespace Frock_backend.routes.REST.Transform
 {
     public class CreateFullRouteCommandFromResponse
     {
-        public static CreateFullRouteCommand toCommandFromResource(CreateFullRouteResource resource) => 
-            new CreateFullRouteCommand (
+        public static CreateFullRouteCommand toCommandFromResource(CreateFullRouteResource resource) =>
+            new CreateFullRouteCommand(
                 resource.Price,
                 resource.Duration,
                 resource.Frequency,
                 resource.StopsIds,
-                resource.Schedules.Select(schedule => new Schedule
-                {
-                    DayOfWeek = schedule.DayOfWeek,
-                    StartTime = schedule.StartTime,
-                    EndTime = schedule.EndTime
-                }).ToList()
+                resource.Schedules.Select(schedule => new Schedule(
+                    schedule.StartTime,
+                    schedule.EndTime,
+                    schedule.DayOfWeek
+                )).ToList()
             );
     }
 }
