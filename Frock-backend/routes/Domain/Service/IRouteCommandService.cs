@@ -8,6 +8,6 @@ namespace Frock_backend.routes.Domain.Service
     {
         Task<RouteAggregate?> Handle(CreateFullRouteCommand command);
         Task<RouteAggregate?> Handle(UpdateRouteCommand command);
-        Task Handle(DeleteRouteCommand command);
+        void Handle(DeleteRouteCommand command);
     }
 }
