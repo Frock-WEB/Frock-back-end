@@ -145,7 +145,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5174")//ajustar
+        policy.WithOrigins("http://localhost:5173")//ajustar
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
