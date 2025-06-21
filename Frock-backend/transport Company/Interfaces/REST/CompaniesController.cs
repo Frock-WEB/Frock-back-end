@@ -56,16 +56,16 @@ namespace Frock_backend.transport_Company.Interfaces.REST
             return Ok(resources);
         }
         
-        [HttpGet("check-user/{userId}")]
+        [HttpGet("user/{FKeyIdUser}")]
         [SwaggerOperation(
             Summary = "Verify Company by UserID",
             Description = "Returns the redirect route based on whether or not the user has an associated company.",
             OperationId = "CheckUserCompany"
             
         )]
-        public async Task<IActionResult> CheckUserCompany(int userId)
+        public async Task<IActionResult> CheckUserCompany(int FKeyIdUser)
         {
-            var company = await queryService.GetByUserIdAsync(userId);
+            var company = await queryService.GetByUserIdAsync(FKeyIdUser);
             if (company == null)
                 return Ok(new { redirect = "company/onboarding" });
             else
