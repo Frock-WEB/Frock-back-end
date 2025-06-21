@@ -36,7 +36,6 @@
     <Folder Include="access and identity\Domain\Enums\" />
     <Folder Include="access and identity\Domain\Services\" />
     <Folder Include="discovery\Application\" />
-    <Folder Include="routes\Application\Internal\QueryServices\" />
   </ItemGroup>
 
 </Project>

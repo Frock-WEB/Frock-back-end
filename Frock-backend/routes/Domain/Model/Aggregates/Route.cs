@@ -11,8 +11,8 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         public double Price { get; set; }
         public int Duration { get; set; } // in minutes
         public int Frequency { get; set; } // in minutes
-        private readonly List<Schedule> Schedules = new();
-        private readonly List<RoutesStops> _stops = new();
+        public  List<Schedule> Schedules = new();
+        public List<RoutesStops> _stops = new();
         public IReadOnlyCollection<RoutesStops> Stops => _stops;
         public RouteAggregate(double Price, int Duration, int Frequency)
         {

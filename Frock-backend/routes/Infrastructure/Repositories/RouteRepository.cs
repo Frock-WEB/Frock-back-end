@@ -8,7 +8,7 @@ using Frock_backend.stops.Domain.Repositories;
 
 namespace Frock_backend.routes.Infrastructure.Repositories
 {
-    public class RouteRepository(AppDbContext context) : BaseRepository<RouteAggregate>(context), IRepositoryRoute
+    public class RouteRepository(AppDbContext context) : BaseRepository<RouteAggregate>(context), IRouteRepository
     {
         
     }

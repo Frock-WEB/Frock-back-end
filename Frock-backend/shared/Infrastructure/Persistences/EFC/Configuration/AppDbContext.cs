@@ -1,13 +1,15 @@
-﻿using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration.Extensions;
-
+﻿using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using Frock_backend.routes.Domain.Model.Aggregates;
+using Frock_backend.routes.Domain.Model.Entities;
+using Frock_backend.routes.Domain.Model.ValueObjects;
+using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration.Extensions;
 //AGREGATES
 using Frock_backend.stops.Domain.Model.Aggregates;
 using Frock_backend.stops.Domain.Model.Aggregates.Geographic;
-
 using Frock_backend.transport_Company.Domain.Model.Aggregates;
-
 using Microsoft.EntityFrameworkCore;
-using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using Microsoft.EntityFrameworkCore.Migrations;
+using System.Reflection.Emit;
 
 
 namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
@@ -80,13 +82,13 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
             builder.Entity<Stop>().Property(f => f.Address).IsRequired();
             builder.Entity<Stop>().Property(f => f.Reference).IsRequired();
 
+
             builder.Entity<Stop>()
                 .HasOne<Company>() // Un Stop tiene una Company
                 .WithMany() // Una Company tiene muchos Stops
                 .HasForeignKey(l => l.FkIdCompany)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
             builder.Entity<Stop>()
                 .HasOne<Locality>() // Un Stop tiene una Locality
                 .WithMany() // Una Locality tiene muchos Stops
@@ -94,8 +96,50 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            
-            builder.UseSnakeCaseNamingConvention();
+            // 1) RouteAggregate como entidad raíz (1-N)
+            builder.Entity<RouteAggregate>(b =>
+            {
+                b.ToTable("Routes");
+                b.HasKey(r => r.Id);
+                b.Property(r => r.Price).IsRequired();
+                b.Property(r => r.Duration).IsRequired();
+                b.Property(r => r.Frequency).IsRequired();
+                // 2) Schedule como entidad hija (1-N)
+                b.HasMany(r => r.Schedules)
+                 .WithOne()                               // si no navegas hacia RouteAggregate
+                 .HasForeignKey(s => s.RouteId)
+                 .OnDelete(DeleteBehavior.Cascade);
+                // Owned type: RouteStop → tabla intermedia
+                // RouteStops (join table)
+                builder.Entity<RoutesStops>(b =>
+                {
+                    b.ToTable("RouteStops");
+                    // clave compuesta RouteId+StopId
+                    b.HasKey(rs => new { rs.FKRouteId, rs.FkStopId });
+
+                    // relación a RouteAggregate
+                    b.HasOne(rs => rs.Route)
+                     .WithMany(r => r.Stops)
+                     .HasForeignKey(rs => rs.FKRouteId);
+
+                    // relación a Stop
+                    b.HasOne(rs => rs.Stop)
+                     .WithMany()
+                     .HasForeignKey(rs => rs.FkStopId)
+                     .OnDelete(DeleteBehavior.Restrict);
+                });
+            }
+            );
+
+            // 4) Schedule
+            builder.Entity<Schedule>(b =>
+            {
+                b.ToTable("Schedules");
+                b.HasKey(s => s.Id);
+                b.Property(s => s.StartTime).IsRequired();
+                b.Property(s => s.EndTime).IsRequired();
+                b.Property(s => s.DayOfWeek).HasMaxLength(10);
+            });
         }
     }
 }
