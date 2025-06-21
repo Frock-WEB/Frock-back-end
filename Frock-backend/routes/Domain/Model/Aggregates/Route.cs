@@ -1,6 +1,5 @@
 ﻿using Frock_backend.routes.Domain.Model.Commands;
 using Frock_backend.routes.Domain.Model.Entities;
-using Frock_backend.routes.Domain.Model.ValueObjects;
 using Frock_backend.stops.Domain.Model.Aggregates;
 
 namespace Frock_backend.routes.Domain.Model.Aggregates
@@ -11,9 +10,8 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         public double Price { get; set; }
         public int Duration { get; set; } // in minutes
         public int Frequency { get; set; } // in minutes
-        public  List<Schedule> Schedules = new();
-        public List<RoutesStops> _stops = new();
-        public IReadOnlyCollection<RoutesStops> Stops => _stops;
+        public List<Schedule> Schedules = new();
+        public List<RoutesStops> Stops = new();
         public RouteAggregate(double Price, int Duration, int Frequency)
         {
             this.Price = Price;
@@ -37,7 +35,7 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
                 // Assuming RoutesStops is a value object that holds the stop ID
                 var routeStop = new RoutesStops(stopId);
                 // Here you would typically add this to a collection of stops in the Route aggregate
-                // For example: this.Stops.Add(routeStop);
+                this.Stops.Add(routeStop);
             }
             foreach (var schedule in cm.Schedules)
             {

@@ -1,7 +1,6 @@
 ﻿using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Frock_backend.routes.Domain.Model.Aggregates;
 using Frock_backend.routes.Domain.Model.Entities;
-using Frock_backend.routes.Domain.Model.ValueObjects;
 using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration.Extensions;
 //AGREGATES
 using Frock_backend.stops.Domain.Model.Aggregates;
@@ -96,7 +95,7 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // 1) RouteAggregate como entidad raíz (1-N)
+            // ROUTE
             builder.Entity<RouteAggregate>(b =>
             {
                 b.ToTable("Routes");
@@ -115,7 +114,7 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 {
                     b.ToTable("RouteStops");
                     // clave compuesta RouteId+StopId
-                    b.HasKey(rs => new { rs.FKRouteId, rs.FkStopId });
+                    b.HasKey(rs => rs.Id);
 
                     // relación a RouteAggregate
                     b.HasOne(rs => rs.Route)
