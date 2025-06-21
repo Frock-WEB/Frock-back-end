@@ -71,14 +71,14 @@ builder.Services.AddSwaggerGen(options =>
      options.SwaggerDoc("v1",
         new OpenApiInfo
         {
-            Title = "ACME.FrockBackend.API",
+            Title = "Frock_Backend",
             Version = "v1",
-            Description = "ACME Frock Backend API",
+            Description = "Frock Backend API",
             TermsOfService = new Uri("https://acme-learning.com/tos"),
             Contact = new OpenApiContact
             {
-                Name = "ACME Studios",
-                Email = "contact@acme.com"
+                Name = "frock Studios",
+                Email = "frockWEB.com"
             },
             License = new OpenApiLicense
             {
