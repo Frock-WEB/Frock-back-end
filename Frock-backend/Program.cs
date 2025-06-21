@@ -41,6 +41,11 @@ using Frock_backend.stops.Domain.Services.Geographic;
 using Frock_backend.stops.Infrastructure.Repositories.Geographic;
 
 using Frock_backend.stops.Infrastructure.Seeding;
+// ROUTES - GSUS
+using Frock_backend.routes.Domain.Repository;
+using Frock_backend.routes.Infrastructure.Repositories;
+using Frock_backend.routes.Domain.Service;
+using Frock_backend.routes.Application.Internal.CommandServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -135,6 +140,10 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
     builder.Services.AddScoped<IStopCommandService, StopCommandService>();
     builder.Services.AddScoped<IStopQueryService, StopQueryService>();
 
+//Routes
+    builder.Services.AddScoped<IRouteRepository, RouteRepository>();
+    builder.Services.AddScoped<IRouteCommandService, RouteCommandService>();
+    //builder.Services.AddScoped<IRouteQueryService, RouteQueryService>();
 //Seeding Service Geographic Data
 // Datos iniciales fijos de datos geográficos
 builder.Services.AddScoped<GeographicDataSeeder>();
