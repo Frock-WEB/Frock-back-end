@@ -3,7 +3,7 @@ using Frock_backend.IAM.Domain.Model.Aggregates;
 using Frock_backend.IAM.Domain.Model.Commands;
 using Frock_backend.IAM.Domain.Repositories;
 using Frock_backend.IAM.Domain.Services;
-using Frock_backend.Shared.Domain.Repositories;
+using Frock_backend.shared.Domain.Repositories;
 using Frock_backend.IAM.Domain.Model.ValueObjects;
 
 namespace Frock_backend.IAM.Application.Internal.CommandServices;

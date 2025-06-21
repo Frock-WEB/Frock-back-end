@@ -7,9 +7,13 @@ using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration.Extensi
 using Frock_backend.stops.Domain.Model.Aggregates;
 using Frock_backend.stops.Domain.Model.Aggregates.Geographic;
 using Frock_backend.transport_Company.Domain.Model.Aggregates;
+using Frock_backend.IAM.Domain.Model.Aggregates;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Reflection.Emit;
+
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
@@ -25,6 +29,13 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // IAM Context
+            builder.Entity<User>().HasKey(u => u.Id);
+            builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
+            builder.Entity<User>().Property(u => u.Username).IsRequired();
+            builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+            builder.Entity<User>().Property(u => u.Role).HasConversion<string>().IsRequired();
 
             //COMPANY
             builder.Entity<Company>().HasKey(f => f.Id);
@@ -70,7 +81,6 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 .HasForeignKey(l => l.FkIdDistrict)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
 
             //STOP
             builder.Entity<Stop>().HasKey(f => f.Id);
@@ -140,6 +150,9 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 b.Property(s => s.EndTime).IsRequired();
                 b.Property(s => s.DayOfWeek).HasMaxLength(10);
             });
+
+
+            //builder.UseSnakeCaseNamingConvention();
         }
     }
 }

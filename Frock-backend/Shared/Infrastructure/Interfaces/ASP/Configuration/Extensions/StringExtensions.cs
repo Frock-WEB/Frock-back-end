@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Frock_backend.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions
+namespace Frock_backend.shared.Infrastructure.Interfaces.ASP.Configuration.Extensions
 {
 
     /// <summary>
@@ -18,7 +18,12 @@ namespace Frock_backend.Shared.Infrastructure.Interfaces.ASP.Configuration.Exten
         public static string ToKebabCase(this string text)
         {
             if (string.IsNullOrEmpty(text))
+            {
+
                 return text;
+
+            }
+
             return KebabCaseRegex().Replace(text, "-$1")
                 .Trim()
                 .ToLower();

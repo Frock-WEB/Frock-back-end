@@ -1,19 +1,3 @@
-using Frock_backend.IAM.Application.Internal.CommandServices;
-using Frock_backend.IAM.Application.Internal.OutboundServices;
-using Frock_backend.IAM.Application.Internal.QueryServices;
-using Frock_backend.IAM.Domain.Repositories;
-using Frock_backend.IAM.Domain.Services;
-using Frock_backend.IAM.Infrastructure.Hashing.BCrypt.Services;
-using Frock_backend.IAM.Infrastructure.Persistence.EFC.Repositories;
-using Frock_backend.IAM.Infrastructure.Pipeline.Middleware.Extensions;
-using Frock_backend.IAM.Infrastructure.Tokens.JWT.Configuration;
-using Frock_backend.IAM.Infrastructure.Tokens.JWT.Services;
-using Frock_backend.IAM.Interfaces.ACL;
-using Frock_backend.IAM.Interfaces.ACL.Services;
-using Frock_backend.Shared.Domain.Repositories;
-using Frock_backend.Shared.Infrastructure.Interfaces.ASP.Configuration;
-using Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration;
-using Frock_backend.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -22,6 +6,23 @@ using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration;
 using Frock_backend.shared.Infrastructure.Persistences.EFC.Repositories;
 using Frock_backend.shared.Infrastructure.Interfaces.ASP.Configuration;
 using Frock_backend.shared.Domain.Repositories;
+
+//IAM - Adrian
+using Frock_backend.IAM.Application.Internal.CommandServices;
+using Frock_backend.IAM.Application.Internal.OutboundServices;
+using Frock_backend.IAM.Application.Internal.QueryServices;
+
+using Frock_backend.IAM.Domain.Repositories;
+using Frock_backend.IAM.Domain.Services;
+using Frock_backend.IAM.Infrastructure.Persistence.EFC.Repositories;
+
+using Frock_backend.IAM.Infrastructure.Hashing.BCrypt.Services;
+using Frock_backend.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using Frock_backend.IAM.Infrastructure.Tokens.JWT.Configuration;
+using Frock_backend.IAM.Infrastructure.Tokens.JWT.Services;
+
+using Frock_backend.IAM.Interfaces.ACL;
+using Frock_backend.IAM.Interfaces.ACL.Services;
 
 //COMPANY - Amir
 
@@ -109,9 +110,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-// Database
-builder.Services.AddDbContext<AccessIdentityDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 /// <summary>
 /// Obtiene la cadena de conexión a la base de datos MySQL desde la configuración de la aplicación.
@@ -148,6 +146,7 @@ else if (builder.Environment.IsProduction())
 
 
 // Configure Dependency Injection
+
 // Shared Bounded Context Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -161,12 +160,6 @@ builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
-
-
-// News Bounded Context Injection Configuration
-// Access and Identity
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<IUserService, UserService>();
 
 //Company
     builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();

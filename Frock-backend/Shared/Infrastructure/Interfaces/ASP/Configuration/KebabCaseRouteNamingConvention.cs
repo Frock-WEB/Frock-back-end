@@ -1,7 +1,7 @@
-﻿using Frock_backend.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
+﻿using Frock_backend.shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace Frock_backend.Shared.Infrastructure.Interfaces.ASP.Configuration
+namespace Frock_backend.shared.Infrastructure.Interfaces.ASP.Configuration
 {
     public class KebabCaseRouteNamingConvention: IControllerModelConvention
     {

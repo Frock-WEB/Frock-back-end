@@ -1,4 +1,4 @@
-﻿namespace Frock_backend.Shared.Domain.Repositories
+﻿namespace Frock_backend.shared.Domain.Repositories
 {
     public interface IBaseRepository<TEntity>
     {

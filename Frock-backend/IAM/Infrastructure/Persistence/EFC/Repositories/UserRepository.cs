@@ -1,7 +1,7 @@
 using Frock_backend.IAM.Domain.Model.Aggregates;
 using Frock_backend.IAM.Domain.Repositories;
-using Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration;
-using Frock_backend.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration;
+using Frock_backend.shared.Infrastructure.Persistences.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Frock_backend.IAM.Infrastructure.Persistence.EFC.Repositories;
