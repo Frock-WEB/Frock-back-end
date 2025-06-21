@@ -5,6 +5,7 @@
         int id,
         string startTime, // Time in HH:mm format
         string endTime,
-        string dayOfWeek // Day of the week, e.g., "Monday", "Tuesday", etc.
+        string dayOfWeek, // Day of the week, e.g., "Monday", "Tuesday", etc.
+        bool enabled // Indicates if the schedule is enabled or not
         );
 }

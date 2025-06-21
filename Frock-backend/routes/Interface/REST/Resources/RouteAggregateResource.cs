@@ -1,10 +1,10 @@
 ﻿
 namespace Frock_backend.routes.Interface.REST.Resources
 {
-    public record RouteAggregateResponse
+    public record RouteAggregateResource
     (
         int id,
-        int price,
+        double price,
         int frequency,
         int duration,
         List<StopResource> stops,

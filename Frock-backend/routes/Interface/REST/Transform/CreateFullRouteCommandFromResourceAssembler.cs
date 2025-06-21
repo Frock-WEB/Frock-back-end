@@ -3,7 +3,7 @@ using Frock_backend.routes.Interface.REST.Resources;
 using Frock_backend.routes.Domain.Model.Entities;
 namespace Frock_backend.routes.Interface.REST.Transform
 {
-    public class CreateFullRouteCommandFromResponse
+    public class CreateFullRouteCommandFromResourceAssembler
     {
         public static CreateFullRouteCommand toCommandFromResource(CreateFullRouteResource resource) =>
             new CreateFullRouteCommand(

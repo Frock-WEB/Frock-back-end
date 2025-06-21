@@ -38,7 +38,7 @@ namespace Frock_backend.routes.Interface.REST
             {
                 return BadRequest("Resource cannot be null.");
             }
-            var createRouteCommand = CreateFullRouteCommandFromResponse.toCommandFromResource(resource);
+            var createRouteCommand = CreateFullRouteCommandFromResourceAssembler.toCommandFromResource(resource);
             var result = await routeCommandService.Handle(createRouteCommand);
             if (result is null) return BadRequest();
             return Ok(result);
