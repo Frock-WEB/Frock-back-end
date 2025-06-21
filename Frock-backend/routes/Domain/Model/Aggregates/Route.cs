@@ -5,7 +5,7 @@ using Frock_backend.stops.Domain.Model.Aggregates;
 
 namespace Frock_backend.routes.Domain.Model.Aggregates
 {
-    public class Route
+    public class RouteAggregate
     {
         public int Id { get; set; }
         public double Price { get; set; }
@@ -14,7 +14,7 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         private readonly List<Schedule> Schedules = new();
         private readonly List<RoutesStops> _stops = new();
         public IReadOnlyCollection<RoutesStops> Stops => _stops;
-        public Route(double Price, int Duration, int Frequency)
+        public RouteAggregate(double Price, int Duration, int Frequency)
         {
             this.Price = Price;
             this.Duration = Duration;
@@ -27,7 +27,7 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         }
 
         // Renamed the method to avoid conflict with the class name
-        public void ConfigureRoute(CreateFullRouteCommand cm)
+        public RouteAggregate(CreateFullRouteCommand cm)
         {
             this.Price = cm.Price;
             this.Duration = cm.Duration;
