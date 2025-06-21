@@ -58,5 +58,9 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
                 this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, true);
             }
         }
+        public RouteAggregate(DeleteRouteCommand cm)
+        {
+            this.Id = cm.idRoute;
+        }
     }
 }
