@@ -12,7 +12,7 @@ public class User(string email, string username, string passwordHash, Role role)
     public int Id { get; }
     public string Email { get; private set; } = email;
     public string Username { get; private set; } = username;
-    public Role Role { get; private set; }
+    public Role Role { get; private set; } = role;
 
     [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;
 

@@ -15,14 +15,14 @@ public class IamContextFacade(IUserCommandService userCommandService, IUserQuery
      * <param name="password">The password for the new user.</param>
      * <returns>The ID of the newly created user.</returns>
      */
-    public async Task<int> CreateUser(string username, string email, string password)
+    public async Task<int> CreateUser(string username, string email, string password, Role role)
     {
         var signUpCommand = new SignUpCommand
         {
             Username = username,
             Email = email,
             Password = password,
-            Role = Role.Traveller
+            Role = role
         };
 
 
