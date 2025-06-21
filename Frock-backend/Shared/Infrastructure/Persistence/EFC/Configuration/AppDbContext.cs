@@ -44,6 +44,8 @@ namespace Frock_backend.Shared.Infrastructure.Persistence.EFC.Configuration
             builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Entity<User>().Property(u => u.Username).IsRequired();
             builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+            builder.Entity<User>().Property(u => u.Role).HasConversion<string>().IsRequired();
+
             builder.UseSnakeCaseNamingConvention();
         }
     }
