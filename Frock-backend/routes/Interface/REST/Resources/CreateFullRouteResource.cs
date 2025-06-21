@@ -1,4 +1,4 @@
-﻿namespace Frock_backend.routes.REST.Resources
+﻿namespace Frock_backend.routes.Interface.REST.Resources
 {
     public record CreateFullRouteResource
     (

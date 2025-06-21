@@ -1,10 +1,10 @@
 ﻿using Frock_backend.routes.Domain.Service;
-using Frock_backend.routes.REST.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
-using Frock_backend.routes.REST.Transform;
-namespace Frock_backend.routes.REST
+using Frock_backend.routes.Interface.REST.Resources;
+using Frock_backend.routes.Interface.REST.Transform;
+namespace Frock_backend.routes.Interface.REST
 {
     /// <summary>
     /// Routes controller.
