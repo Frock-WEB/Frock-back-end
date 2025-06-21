@@ -7,5 +7,7 @@ namespace Frock_backend.routes.Domain.Service
     public interface IRouteCommandService
     {
         Task<RouteAggregate?> Handle(CreateFullRouteCommand command);
+        Task<RouteAggregate?> Handle(UpdateRouteCommand command);
+        void Handle(DeleteRouteCommand command);
     }
 }

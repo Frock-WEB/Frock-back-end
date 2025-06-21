@@ -2,11 +2,13 @@
 
 namespace Frock_backend.routes.Domain.Model.Commands
 {
-    public record CreateFullRouteCommand(
+    public record UpdateRouteCommand
+    (
+        int IdRoute,
         double Price,
-        int Duration,
-        int Frequency,
+        int Duration, // in minutes
+        int Frequency, // in minutes
         List<int> StopsIds,
         List<Schedule> Schedules
-    );
+    );    
 }
