@@ -216,10 +216,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-
 app.UseCors();
-
-
 
 // Verify Database Objects are created
 using (var scope = app.Services.CreateScope())
@@ -242,22 +239,18 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
+app.UseSwagger(c =>
 {
-    app.UseSwagger(c =>
-    {
-        c.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
-    });
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-        c.RoutePrefix = string.Empty; // Opcional: para que Swagger sea la p�gina ra�z
-        c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-    });
-}
+    c.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
+});
 
-app.UseCors("AllowAllPolicy");
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+    c.RoutePrefix = string.Empty; // Opcional: para que Swagger sea la p�gina ra�z
+    c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+});
+
 app.UseHttpsRedirection();
 app.UseRouting(); // Si no está implícito
 app.UseRequestAuthorization(); // Tu middleware personalizado
