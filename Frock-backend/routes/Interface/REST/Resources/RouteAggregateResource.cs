@@ -7,7 +7,7 @@ namespace Frock_backend.routes.Interface.REST.Resources
         double price,
         int frequency,
         int duration,
-        List<StopResource> stops,
+        List<StopInRoutesResource> stops,
         List<ScheduleResource> schedules
     );
 }

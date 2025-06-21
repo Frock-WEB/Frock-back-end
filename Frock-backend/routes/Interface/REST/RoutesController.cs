@@ -1,9 +1,10 @@
-﻿using Frock_backend.routes.Domain.Service;
+﻿using Frock_backend.routes.Domain.Model.Queries;
+using Frock_backend.routes.Domain.Service;
+using Frock_backend.routes.Interface.REST.Resources;
+using Frock_backend.routes.Interface.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
-using Frock_backend.routes.Interface.REST.Resources;
-using Frock_backend.routes.Interface.REST.Transform;
 namespace Frock_backend.routes.Interface.REST
 {
     /// <summary>
@@ -15,7 +16,7 @@ namespace Frock_backend.routes.Interface.REST
     [Route("api/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Tags("Routes")]
-    public class RoutesController(IRouteCommandService routeCommandService) : ControllerBase
+    public class RoutesController(IRouteCommandService routeCommandService, IRouteQueryService routeQueryService) : ControllerBase
     {
         /// <summary>
         /// Creates a new stop.
@@ -42,6 +43,38 @@ namespace Frock_backend.routes.Interface.REST
             var result = await routeCommandService.Handle(createRouteCommand);
             if (result is null) return BadRequest();
             return Ok(result);
-        }   
+        }
+
+        /// <summary>
+        /// Creates a new stop.
+        /// </summary>
+        /// <param name="resource">The GetStopsBy resource</param>
+        /// <returns>
+        /// A response as an action result containing the Get, or bad request if the stop was not created.
+        /// </returns>
+        [HttpGet("company/{FkIdCompany}")]
+        [SwaggerOperation(
+            Summary = "Get Routes By Company Id",
+            Description = "Get routes by Company Id",
+            OperationId = "GetRoutesByCompanyId"
+            )]
+        [SwaggerResponse(200, "The routes were retrieved", typeof(IEnumerable<RouteAggregateResource>))]
+        [SwaggerResponse(404, "No routes found")]
+        public async Task<ActionResult<IEnumerable<RouteAggregateResource>>> GetAllRoutes(int FkIdCompany)
+        {
+            GetAllRoutesByFkCompanyIdQuery query = new GetAllRoutesByFkCompanyIdQuery(FkIdCompany);
+            var routes = await routeQueryService.Handle(query); // Assuming this method exists in the service
+            if (routes == null || !routes.Any())
+            {
+                return NotFound("No routes found.");
+            }
+
+            var resources = routes.Select((routeAggregate) => RouteAggregateResourceFromResourceAssembler.ToResourceFromEntity(routeAggregate)).ToList();
+
+            return Ok(resources);
+        }
+
+
+
     }
 }

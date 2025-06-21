@@ -3,7 +3,7 @@
 namespace Frock_backend.routes.Domain.Model.Commands
 {
     public record CreateFullRouteCommand(
-        int Price,
+        double Price,
         int Duration,
         int Frequency,
         List<int> StopsIds,
