@@ -42,7 +42,14 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
             builder.Entity<Company>().Property(f => f.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Entity<Company>().Property(f => f.Name).IsRequired();
             builder.Entity<Company>().Property(f => f.LogoUrl).IsRequired();
-            builder.Entity<Company>().Property(f => f.FkIdUser).IsRequired(); // Luego modificar para definirlo como foreign key
+            // Fix for CS1660: The issue arises because the lambda expression is being used in a context where a string is expected.
+            // The correct fix is to specify the type explicitly for the foreign key property.
+            builder.Entity<Company>()
+                .HasOne<User>() // Una Company tiene un User (dueño)
+                .WithOne() // Un User puede tener una Company (dueño)
+                .HasForeignKey<Company>(c => c.FkIdUser) // Specify the entity type explicitly
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             //REGION
             builder.Entity<Region>().HasKey(f => f.Id);
