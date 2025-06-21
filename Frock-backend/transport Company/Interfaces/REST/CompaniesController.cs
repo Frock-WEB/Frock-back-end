@@ -61,8 +61,10 @@ namespace Frock_backend.transport_Company.Interfaces.REST
             Summary = "Verify Company by UserID",
             Description = "Returns the redirect route based on whether or not the user has an associated company.",
             OperationId = "CheckUserCompany"
-            
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "The company was found.", typeof(CompanyResource))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "The company was not found.")]
+        
         public async Task<IActionResult> CheckUserCompany(int FKeyIdUser)
         {
             var company = await queryService.GetByUserIdAsync(FKeyIdUser);
