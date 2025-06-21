@@ -5,20 +5,8 @@ using Frock_backend.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
 namespace Frock_backend.IAM.Infrastructure.Pipeline.Middleware.Components;
 
-/**
- * RequestAuthorizationMiddleware is a custom middleware.
- * This middleware is used to authorize requests.
- * It validates a token is included in the request header and that the token is valid.
- * If the token is valid then it sets the user in HttpContext.Items["User"].
- */
 public class RequestAuthorizationMiddleware(RequestDelegate next)
 {
-    /**
-     * InvokeAsync is called by the ASP.NET Core runtime.
-     * It is used to authorize requests.
-     * It validates a token is included in the request header and that the token is valid.
-     * If the token is valid then it sets the user in HttpContext.Items["User"].
-     */
     public async Task InvokeAsync(
         HttpContext context,
         IUserQueryService userQueryService,

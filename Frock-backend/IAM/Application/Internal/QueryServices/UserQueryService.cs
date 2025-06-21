@@ -4,15 +4,6 @@ using Frock_backend.IAM.Domain.Repositories;
 using Frock_backend.IAM.Domain.Services;
 
 namespace Frock_backend.IAM.Application.Internal.QueryServices;
-
-/**
- * <summary>
- *     The user query service implementation class
- * </summary>
- * <remarks>
- *     This class is used to handle user queries
- * </remarks>
- */
 public class UserQueryService(IUserRepository userRepository) : IUserQueryService
 {
     /**

@@ -1,11 +1,10 @@
-namespace Frock_backend.IAM.Domain.Model.Commands;
+using Frock_backend.IAM.Domain.Model.ValueObjects;
 
-/**
- * <summary>
- *     The sign up command
- * </summary>
- * <remarks>
- *     This command object includes the email, username and password to sign up
- * </remarks>
- */
-public record SignUpCommand(string Email, string Username, string Password);
+namespace Frock_backend.IAM.Domain.Model.Commands;
+public class SignUpCommand
+{
+    public string Email { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public Role Role { get; set; } = Role.Traveller;  // Valor por defecto opcional
+}

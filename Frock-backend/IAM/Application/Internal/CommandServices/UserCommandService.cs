@@ -4,17 +4,9 @@ using Frock_backend.IAM.Domain.Model.Commands;
 using Frock_backend.IAM.Domain.Repositories;
 using Frock_backend.IAM.Domain.Services;
 using Frock_backend.Shared.Domain.Repositories;
+using Frock_backend.IAM.Domain.Model.ValueObjects;
 
 namespace Frock_backend.IAM.Application.Internal.CommandServices;
-
-/**
- * <summary>
- *     The user command service
- * </summary>
- * <remarks>
- *     This class is used to handle user commands
- * </remarks>
- */
 public class UserCommandService(
     IUserRepository userRepository,
     ITokenService tokenService,
@@ -50,14 +42,14 @@ public class UserCommandService(
      */
     public async Task Handle(SignUpCommand command)
     {
-    /*    if (await userRepository.ExistsByUsername(command.Username))
-            throw new Exception($"Username '{command.Username}' is already taken");
+    /*    if (await userRepository.ExistsByName(command.Name))
+            throw new Exception($"Name '{command.Nname}' is already taken");
     */
         if (await userRepository.ExistsByEmail(command.Email))
             throw new Exception($"Email '{command.Email}' is already registered");
 
         var hashedPassword = hashingService.HashPassword(command.Password);
-        var user = new User(command.Email, command.Username, hashedPassword);
+        var user = new User(command.Email, command.Username, hashedPassword, command.Role);
 
         try
         {

@@ -10,14 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Frock_backend.IAM.Infrastructure.Tokens.JWT.Services;
 
-/**
- * <summary>
- *     The token service
- * </summary>
- * <remarks>
- *     This class is used to generate and validate tokens
- * </remarks>
- */
 public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
 {
     private readonly TokenSettings _tokenSettings = tokenSettings.Value;

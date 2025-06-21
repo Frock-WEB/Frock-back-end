@@ -3,14 +3,6 @@ using Frock_backend.IAM.Domain.Model.Commands;
 
 namespace Frock_backend.IAM.Domain.Services;
 
-/**
- * <summary>
- *     The user command service
- * </summary>
- * <remarks>
- *     This interface is used to handle user commands
- * </remarks>
- */
 public interface IUserCommandService
 {
     /**

@@ -2,15 +2,6 @@ using Frock_backend.IAM.Domain.Model.Aggregates;
 using Frock_backend.IAM.Domain.Model.Queries;
 
 namespace Frock_backend.IAM.Domain.Services;
-
-/**
- * <summary>
- *     The user query service interface
- * </summary>
- * <remarks>
- *     This service contract specifies handling behavior used to query users
- * </remarks>
- */
 public interface IUserQueryService
 {
     /**

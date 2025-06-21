@@ -3,11 +3,6 @@ using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Frock_backend.IAM.Infrastructure.Hashing.BCrypt.Services;
 
-/**
- * <summary>
- *     This class is responsible for hashing and validating passwords.
- * </summary>
- */
 public class HashingService : IHashingService
 {
     /**

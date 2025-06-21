@@ -9,14 +9,6 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Frock_backend.IAM.Interfaces.REST;
 
-/**
- * <summary>
- *     The user's controller
- * </summary>
- * <remarks>
- *     This class is used to handle user requests
- * </remarks>
- */
 [Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -45,12 +37,6 @@ public class UsersController(IUserQueryService userQueryService) : ControllerBas
         return Ok(userResource);
     }
 
-    /**
-     * <summary>
-     *     Get all users' endpoint. It allows getting all users
-     * </summary>
-     * <returns>The user resources</returns>
-     */
     [HttpGet]
     [SwaggerOperation(
         Summary = "Get all users",

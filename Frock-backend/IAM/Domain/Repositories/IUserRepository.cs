@@ -2,15 +2,6 @@ using Frock_backend.IAM.Domain.Model.Aggregates;
 using Frock_backend.Shared.Domain.Repositories;
 
 namespace Frock_backend.IAM.Domain.Repositories;
-
-/**
- * <summary>
- *     The user repository
- * </summary>
- * <remarks>
- *     This repository is used to manage users
- * </remarks>
- */
 public interface IUserRepository : IBaseRepository<User>
 {
     /**

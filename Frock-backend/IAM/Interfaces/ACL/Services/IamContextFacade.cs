@@ -1,14 +1,9 @@
 using Frock_backend.IAM.Domain.Model.Commands;
 using Frock_backend.IAM.Domain.Model.Queries;
+using Frock_backend.IAM.Domain.Model.ValueObjects;
 using Frock_backend.IAM.Domain.Services;
 
 namespace Frock_backend.IAM.Interfaces.ACL.Services;
-
-/**
- * <summary>
- *     Provides access to IAM context operations such as user creation and retrieval.
- * </summary>
- */
 public class IamContextFacade(IUserCommandService userCommandService, IUserQueryService userQueryService) : IIamContextFacade
 {
     /**
@@ -22,7 +17,15 @@ public class IamContextFacade(IUserCommandService userCommandService, IUserQuery
      */
     public async Task<int> CreateUser(string username, string email, string password)
     {
-        var signUpCommand = new SignUpCommand(username, email, password);
+        var signUpCommand = new SignUpCommand
+        {
+            Username = username,
+            Email = email,
+            Password = password,
+            Role = Role.Traveller
+        };
+
+
         await userCommandService.Handle(signUpCommand);
 
         var getUserByUsernameQuery = new GetUserByUsernameQuery(username);

@@ -6,14 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Frock_backend.IAM.Infrastructure.Persistence.EFC.Repositories;
 
-/**
- * <summary>
- *     The user repository
- * </summary>
- * <remarks>
- *     This repository is used to manage users
- * </remarks>
- */
 public class UserRepository(AppDbContext context) : BaseRepository<User>(context), IUserRepository
 {
     public async Task<User?> FindByUsernameAsync(string username)
