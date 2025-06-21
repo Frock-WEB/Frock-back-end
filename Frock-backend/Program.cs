@@ -17,43 +17,57 @@ using Frock_backend.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
+//SHARED
+using Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration;
+using Frock_backend.shared.Infrastructure.Persistences.EFC.Repositories;
+using Frock_backend.shared.Infrastructure.Interfaces.ASP.Configuration;
+using Frock_backend.shared.Domain.Repositories;
+
+//COMPANY - Amir
+
+using Frock_backend.transport_Company.Application.Internal.CommandServices;
+using Frock_backend.transport_Company.Application.Internal.QueryServices;
+
+using Frock_backend.transport_Company.Domain.Repositories;
+using Frock_backend.transport_Company.Domain.Services;
+
+using Frock_backend.transport_Company.Infrastructure.Repositories;
+
+//STOPS - Amir
+
+using Frock_backend.stops.Application.Internal.CommandServices;
+using Frock_backend.stops.Application.Internal.QueryServices;
+
+using Frock_backend.stops.Domain.Repositories;
+using Frock_backend.stops.Domain.Services;
+
+using Frock_backend.stops.Infrastructure.Repositories;
+
+//GEOGRAPHIC - Amir
+using Frock_backend.stops.Application.Internal.CommandServices.Geographic;
+using Frock_backend.stops.Application.Internal.QueryServices.Geographic;
+
+using Frock_backend.stops.Domain.Repositories.Geographic;
+using Frock_backend.stops.Domain.Services.Geographic;
+
+using Frock_backend.stops.Infrastructure.Repositories.Geographic;
+
+using Frock_backend.stops.Infrastructure.Seeding;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Configure Lower Case URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+// Configure Kebab Case Route Naming Convention
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Add CORS Policy
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllPolicy",
-        policy => policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
-
-if (connectionString == null) throw new InvalidOperationException("Connection string not found.");
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    if (builder.Environment.IsDevelopment())
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
-    else if (builder.Environment.IsProduction())
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Error);
-});
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-
-    options.SwaggerDoc("v1",
+    options.EnableAnnotations();
+     options.SwaggerDoc("v1",
         new OpenApiInfo
         {
             Title = "ACME.FrockBackend.API",
@@ -94,11 +108,48 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
-    options.EnableAnnotations();
 });
+// Database
+builder.Services.AddDbContext<AccessIdentityDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+/// <summary>
+/// Obtiene la cadena de conexi贸n a la base de datos MySQL desde la configuraci贸n de la aplicaci贸n.
+/// </summary>
+/// <remarks>
+/// El valor se extrae de la secci贸n "ConnectionStrings" del archivo `appsettings.json`,
+/// buscando la clave "DefaultConnection".
+/// </remarks>
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (connectionString is null)
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
+
+// Configure Database Context and Logging Levels
+if (builder.Environment.IsDevelopment())
+    builder.Services.AddDbContext<AppDbContext>(
+        options =>
+        {
+            options.UseMySQL(connectionString)
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
+        });
+else if (builder.Environment.IsProduction())
+    builder.Services.AddDbContext<AppDbContext>(
+        options =>
+        {
+            options.UseMySQL(connectionString)
+                .LogTo(Console.WriteLine, LogLevel.Error)
+                .EnableDetailedErrors();
+        });
+
+
+// Configure Dependency Injection
+// Shared Bounded Context Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
 // IAM Bounded Context Injection Configuration
 // TokenSettings Configuration
@@ -111,28 +162,96 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
 
+
+// News Bounded Context Injection Configuration
+// Access and Identity
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IUserService, UserService>();
+
+//Company
+    builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+    builder.Services.AddScoped<ICompanyCommandService, CompanyCommandService>();
+    builder.Services.AddScoped<ICompanyQueryService, CompanyQueryService>();
+
+//Geographic
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+    builder.Services.AddScoped<IRegionCommandService, RegionCommandService>();
+    builder.Services.AddScoped<IRegionQueryService, RegionQueryService>();
+        /**/
+    builder.Services.AddScoped<IProvinceRepository, ProvinceRepository>();
+    builder.Services.AddScoped<IProvinceCommandService, ProvinceCommandService>();
+    builder.Services.AddScoped<IProvinceQueryService, ProvinceQueryService>();
+        /**/
+    builder.Services.AddScoped<IDistrictRepository, DistrictRepository>();
+    builder.Services.AddScoped<IDistrictCommandService, DistrictCommandService>();
+    builder.Services.AddScoped<IDistrictQueryService, DistrictQueryService>();
+        /**/
+    builder.Services.AddScoped<ILocalityRepository, LocalityRepository>();
+    builder.Services.AddScoped<ILocalityCommandService, LocalityCommandService>();
+    builder.Services.AddScoped<ILocalityQueryService, LocalityQueryService>();
+
+//Stops
+    builder.Services.AddScoped<IStopRepository, StopRepository>();
+    builder.Services.AddScoped<IStopCommandService, StopCommandService>();
+    builder.Services.AddScoped<IStopQueryService, StopQueryService>();
+
+//Seeding Service Geographic Data
+// Datos iniciales fijos de datos geogr谩ficos
+builder.Services.AddScoped<GeographicDataSeeder>();
+
+
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5174")//ajustar
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
+
+app.UseCors();
+
+
+
+// Verify Database Objects are created
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
     context.Database.EnsureCreated();
+
+  // Seed initial geographic data
+    try
+    {
+        var seeder = services.GetRequiredService<GeographicDataSeeder>();
+        await seeder.SeedDataAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurri贸 un error durante la carga de datos iniciales.");
+    }
 }
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
 {
-    app.UseSwagger();
+    app.UseSwagger(c =>
+    {
+        c.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
+    });
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-        c.RoutePrefix = string.Empty; // Opcional: para que Swagger sea la p醙ina ra韟
+        c.RoutePrefix = string.Empty; // Opcional: para que Swagger sea la p锟絞ina ra锟絲
         c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-
     });
-
 }
 
 app.UseCors("AllowAllPolicy");
