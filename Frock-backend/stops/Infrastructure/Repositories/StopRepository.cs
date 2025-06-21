@@ -12,7 +12,7 @@ namespace Frock_backend.stops.Infrastructure.Repositories
 {
     public class StopRepository(AppDbContext context) : BaseRepository<Stop>(context), IStopRepository
     {
-        public async Task<IEnumerable<Stop>> FindByFkIdCompanyAsync(string fkIdCompany)
+        public async Task<IEnumerable<Stop>> FindByFkIdCompanyAsync(int fkIdCompany)
         {
             return await Context.Set<Stop>()
                 .Where(f => f.FkIdCompany == fkIdCompany)
@@ -29,5 +29,7 @@ namespace Frock_backend.stops.Infrastructure.Repositories
             return await context.Set<Stop>()
                 .FirstOrDefaultAsync(f => f.Name == name && f.FkIdLocality == fkIdLocality);
         }
+
+
     }
 }

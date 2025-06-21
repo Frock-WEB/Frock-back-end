@@ -16,8 +16,6 @@ namespace Frock_backend.stops.Domain.Services
         /// <returns>An IEnumerable containing the Stops objects</returns>
         Task<IEnumerable<Stop>> Handle(GetAllStopsByFkIdCompanyQuery query);
 
-
-
         /// <summary>
         ///     Handle the GetAllStopsByFkIdLocalityQuery.
         /// </summary>
@@ -41,6 +39,8 @@ namespace Frock_backend.stops.Domain.Services
         ///     The Stop object if found, or null otherwise
         /// </returns>
         Task<Stop?> Handle(GetStopByIdQuery query);
+
+        Task<IEnumerable<Stop>> Handle(GetAllStopsQuery query);
 
 
         /// <summary>
