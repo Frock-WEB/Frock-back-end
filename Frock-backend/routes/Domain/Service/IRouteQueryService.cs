@@ -4,6 +4,6 @@ namespace Frock_backend.routes.Domain.Service
 {
     public interface IRouteQueryService
     {
-        Task<List<RouteAggregate?>> Handle(GetAllRoutesByFkCompanyIdQuery query);
+        Task<IEnumerable<RouteAggregate>> Handle(GetAllRoutesByFkCompanyIdQuery query);
     }
 }
