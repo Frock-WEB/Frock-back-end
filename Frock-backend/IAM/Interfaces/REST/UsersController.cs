@@ -50,4 +50,24 @@ public class UsersController(IUserQueryService userQueryService) : ControllerBas
         var userResources = users.Select(UserResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(userResources);
     }
+
+    //getUserbyEmail endpoint
+    [HttpGet("email/{email}")]
+    [SwaggerOperation(
+        Summary = "Get a user by its email",
+        Description = "Get a user by its email",
+        OperationId = "GetUserByEmail")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The user was found", typeof(UserResource))]
+    public async Task<IActionResult> GetUserByEmail(string email)
+    {
+        var getUserByEmailQuery = new GetUserByEmailQuery(email);
+        var user = await userQueryService.Handle(getUserByEmailQuery);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        var userResource = UserResourceFromEntityAssembler.ToResourceFromEntity(user);
+        return Ok(userResource);
+    }
+
 }

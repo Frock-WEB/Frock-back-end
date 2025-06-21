@@ -25,7 +25,6 @@ public class IamContextFacade(IUserCommandService userCommandService, IUserQuery
             Role = role
         };
 
-
         await userCommandService.Handle(signUpCommand);
 
         var getUserByUsernameQuery = new GetUserByUsernameQuery(username);
@@ -48,6 +47,13 @@ public class IamContextFacade(IUserCommandService userCommandService, IUserQuery
         return result?.Id ?? 0;
     }
 
+    public async Task<int> FetchUserIdByEmail(string email)
+    {
+        var getUserByEmailQuery = new GetUserByEmailQuery(email);
+        var result = await userQueryService.Handle(getUserByEmailQuery);
+        return result?.Id ?? 0;
+    }
+
     /**
      * <summary>
      *     Fetch the username given a user ID.
@@ -60,5 +66,12 @@ public class IamContextFacade(IUserCommandService userCommandService, IUserQuery
         var getUserByIdQuery = new GetUserByIdQuery(userId);
         var result = await userQueryService.Handle(getUserByIdQuery);
         return result?.Username ?? string.Empty;
+    }
+
+    public async Task<string> FetchEmailByUserId(int userId)
+    {
+        var getUserByIdQuery = new GetUserByIdQuery(userId);
+        var result = await userQueryService.Handle(getUserByIdQuery);
+        return result?.Email ?? string.Empty;
     }
 }

@@ -30,4 +30,6 @@ public interface IUserQueryService
      * <returns>The user if found, null otherwise</returns>
      */
     Task<User?> Handle(GetUserByUsernameQuery query);
+
+    Task<User?> Handle(GetUserByEmailQuery query);
 }
