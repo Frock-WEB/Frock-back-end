@@ -14,15 +14,22 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
     {
         Console.WriteLine("Entering InvokeAsync");
         // skip authorization if endpoint is decorated with [AllowAnonymous] attribute
-        var allowAnonymous = context.Request.HttpContext.GetEndpoint()!.Metadata
-            .Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
-        Console.WriteLine($"Allow Anonymous is {allowAnonymous}");
-        if (allowAnonymous)
+        var endpoint = context.Request.HttpContext.GetEndpoint();
+        if (endpoint == null)
         {
-            Console.WriteLine("Skipping authorization");
-            // [AllowAnonymous] attribute is set, so skip authorization
-            await next(context);
-            return;
+            Console.WriteLine("No endpoint found, proceeding with authorization");
+        }
+        else
+        {
+            var allowAnonymous = endpoint.Metadata
+                .Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
+            Console.WriteLine($"Allow Anonymous is {allowAnonymous}");
+            if (allowAnonymous)
+            {
+                Console.WriteLine("Skipping authorization");
+                await next(context);
+                return;
+            }
         }
         Console.WriteLine("Entering authorization");
         // get token from request header

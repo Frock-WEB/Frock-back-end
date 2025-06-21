@@ -24,7 +24,7 @@ using Frock_backend.IAM.Infrastructure.Tokens.JWT.Services;
 using Frock_backend.IAM.Interfaces.ACL;
 using Frock_backend.IAM.Interfaces.ACL.Services;
 
-//COMPANY - Amir
+//COMPANY - Yasser
 
 using Frock_backend.transport_Company.Application.Internal.CommandServices;
 using Frock_backend.transport_Company.Application.Internal.QueryServices;
@@ -248,13 +248,10 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Enviro
 }
 
 app.UseCors("AllowAllPolicy");
-
-app.UseRequestAuthorization();
-
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
+app.UseRouting(); // Si no está implícito
+app.UseRequestAuthorization(); // Tu middleware personalizado
+app.UseAuthorization(); // Authorization de ASP.NET Core
 app.MapControllers();
 
 app.Run();
