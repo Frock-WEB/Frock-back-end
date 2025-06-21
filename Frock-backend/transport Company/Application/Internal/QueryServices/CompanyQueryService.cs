@@ -19,10 +19,10 @@ namespace Frock_backend.transport_Company.Application.Internal.QueryServices
         {
             return await companyRepository.FindByNameAsync(query.Name);
         }
-        
-        public async Task<Company?> GetByUserIdAsync(int userId)
+
+        public async Task<Company?> Handle(GetCompanyByFkIdUserQuery query)
         {
-            return await companyRepository.FindByUserIdAsync(userId);
+            return await companyRepository.FindByFkIdUserAsync(query.FkIdUser);
         }
     }
 }

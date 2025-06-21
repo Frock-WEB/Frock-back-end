@@ -19,11 +19,10 @@ namespace Frock_backend.transport_Company.Infrastructure.Repositories
                 .FirstOrDefaultAsync(f => f.Name == name);
         }
         
-        public async Task<Company?> FindByUserIdAsync(int userId)
+        public async Task<Company?> FindByFkIdUserAsync(int fkIdUser)
         {
-            return await context.Set<Company>().FirstOrDefaultAsync(c => c.FkIdUser == userId);
-        }
-        
+            return await context.Set<Company>().FirstOrDefaultAsync(c => c.FkIdUser == fkIdUser);
+        }        
     
     }
 }
