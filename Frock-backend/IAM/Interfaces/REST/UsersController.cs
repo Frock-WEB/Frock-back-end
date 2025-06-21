@@ -11,7 +11,7 @@ namespace Frock_backend.IAM.Interfaces.REST;
 
 [Authorize]
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Available User endpoints")]
 public class UsersController(IUserQueryService userQueryService) : ControllerBase
