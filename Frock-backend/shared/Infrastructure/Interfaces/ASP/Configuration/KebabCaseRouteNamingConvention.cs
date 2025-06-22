@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace Frock_backend.shared.Infrastructure.Interfaces.ASP.Configuration
 {
-    public class KebabCaseRouteNamingConvention: IControllerModelConvention
+    public class KebabCaseRouteNamingConvention : IControllerModelConvention
     {
         /// <summary>
         ///     This method applies the kebab-case naming convention to the controller.
