@@ -107,7 +107,7 @@ namespace Frock_backend.stops.Interfaces.REST
         }
 
 
-        //
+        
         [HttpGet("locality/{FkIdLocality}")]
         [SwaggerOperation(
        Summary = "Gets all stops by FkIdLocality",

@@ -25,7 +25,12 @@ namespace Frock_backend.stops.Domain.Model.Aggregates
             Reference = string.Empty;
             FkIdLocality = string.Empty;
         }
-
+        public Stop(int id, string name, string address)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Address = address;
+        }
         public Stop(CreateStopCommand command)
         {
             Name = command.Name;
