@@ -1,0 +1,8 @@
+﻿[build]
+builder        = "dockerfile"
+dockerfilePath = "./Frock-backend/Dockerfile"
+
+[deploy]
+startCommand      = "./Frock-backend"
+restartPolicyType = "always"
+healthcheckPath   = "/health"

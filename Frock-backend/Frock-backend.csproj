@@ -6,6 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Frock_backend</RootNamespace>
   </PropertyGroup>
+   
+  <ItemGroup>
+    <Compile Include="Dockerfile" />
+  </ItemGroup>
+   
+  <ItemGroup>
+    <None Include="railway.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>railway.toml</DependentUpon>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -34,5 +46,31 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
     <PackageReference Include="System.Threading" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Dockerfile.cs</LastGenOutput>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
+    <None Update="railway.toml">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>railway.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Dockerfile.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Dockerfile</DependentUpon>
+    </Compile>
   </ItemGroup>   
 </Project>
