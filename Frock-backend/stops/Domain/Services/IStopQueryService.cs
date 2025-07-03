@@ -26,7 +26,7 @@ namespace Frock_backend.stops.Domain.Services
         /// <param name="query">The GetAllStopsByFkIdLocalityQuery query</param>
         /// <returns>An IEnumerable containing the Stops objects</returns>
         /// 
-        Task<IEnumerable<Stop>> Handle(GetAllStopsByFkIdLocalityQuery query);
+        Task<IEnumerable<Stop>> Handle(GetAllStopsByFkIdDistrictQuery query);
 
         /// <summary>
         ///     Handle the GetStopByIdQuery.
@@ -44,15 +44,15 @@ namespace Frock_backend.stops.Domain.Services
 
 
         /// <summary>
-        ///     Handle the GetStopByNameAndFkIdLocalityQuery.
+        ///     Handle the GetStopByNameAndFkIdDistrictQuery.
         /// </summary>
         /// <remarks>
-        ///     This method handles the GetStopByNameAndFkIdLocalityQuery. It returns the stop for the given name and fk_id_locality.
+        ///     This method handles the GetStopByNameAndFkIdDistrictQuery. It returns the stop for the given name and fk_id_District.
         /// </remarks>
-        /// <param name="query">The GetStopByNameAndFkIdLocalityQuery query</param>
+        /// <param name="query">The GetStopByNameAndFkIdDistrictQuery query</param>
         /// <returns>
         ///     The Stop object if found, or null otherwise
         /// </returns>
-        Task<Stop?> Handle(GetStopByNameAndFkIdLocalityQuery query);
+        Task<Stop?> Handle(GetStopByNameAndFkIdDistrictQuery query);
     }
 }

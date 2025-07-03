@@ -185,9 +185,6 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
     builder.Services.AddScoped<IDistrictCommandService, DistrictCommandService>();
     builder.Services.AddScoped<IDistrictQueryService, DistrictQueryService>();
         /**/
-    builder.Services.AddScoped<ILocalityRepository, LocalityRepository>();
-    builder.Services.AddScoped<ILocalityCommandService, LocalityCommandService>();
-    builder.Services.AddScoped<ILocalityQueryService, LocalityQueryService>();
 
 //Stops
     builder.Services.AddScoped<IStopRepository, StopRepository>();

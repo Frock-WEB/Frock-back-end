@@ -12,7 +12,6 @@ namespace Frock_backend.stops.Infrastructure.Seeding
         private readonly IRegionQueryService _regionQueryService;
         private readonly IProvinceCommandService _provinceCommandService;
         private readonly IDistrictCommandService _districtCommandService;
-        private readonly ILocalityCommandService _localityCommandService;
         private readonly ILogger<GeographicDataSeeder> _logger;
 
         public GeographicDataSeeder(
@@ -20,14 +19,12 @@ namespace Frock_backend.stops.Infrastructure.Seeding
             IRegionQueryService regionQueryService,
             IProvinceCommandService provinceCommandService,
             IDistrictCommandService districtCommandService,
-            ILocalityCommandService localityCommandService,
             ILogger<GeographicDataSeeder> logger)
         {
             _regionCommandService = regionCommandService;
             _regionQueryService = regionQueryService;
             _provinceCommandService = provinceCommandService;
             _districtCommandService = districtCommandService;
-            _localityCommandService = localityCommandService;
             _logger = logger;
         }
 
@@ -51,10 +48,7 @@ namespace Frock_backend.stops.Infrastructure.Seeding
             
             // Cargar distritos
             await SeedDistrictsAsync();
-            
-            // Cargar localidades
-            await SeedLocalitiesAsync();
-            
+                        
             _logger.LogInformation("Carga de datos geográficos completada con éxito.");
         }
 
@@ -120,24 +114,6 @@ namespace Frock_backend.stops.Infrastructure.Seeding
             foreach (var district in districts)
             {
                 await _districtCommandService.Handle(district);
-            }
-        }
-
-        private async Task SeedLocalitiesAsync()
-        {
-            _logger.LogInformation("Cargando localidades...");
-            
-            var localities = new List<CreateLocalityCommand>
-            {
-                new("loc-1", "Plaza de Armas", "dist-1"),
-                new("loc-2", "Barrio Bellavista", "dist-2"),
-                new("loc-3", "Cerro Alegre", "dist-3"),
-                // Agrega más localidades según necesites
-            };
-
-            foreach (var locality in localities)
-            {
-                await _localityCommandService.Handle(locality);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace Frock_backend.stops.Interfaces.REST.Transform
                 resource.FkIdCompany,
                 resource.Address,
                 resource.Reference,
-                resource.FkIdLocality
+                resource.FkIdDistrict
             );
         }
     }

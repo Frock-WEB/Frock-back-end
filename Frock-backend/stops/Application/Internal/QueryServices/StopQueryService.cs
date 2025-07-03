@@ -12,17 +12,17 @@ namespace Frock_backend.stops.Application.Internal.QueryServices
         {
             return await stopRepository.FindByFkIdCompanyAsync(query.FkIdCompany);
         }
-        public async Task<IEnumerable<Stop>> Handle(GetAllStopsByFkIdLocalityQuery query)
+        public async Task<IEnumerable<Stop>> Handle(GetAllStopsByFkIdDistrictQuery query)
         {
-            return await stopRepository.FindByFkIdLocalityAsync(query.FkIdLocality);
+            return await stopRepository.FindByFkIdDistrictAsync(query.FkIdDistrict);
         }
         public async Task<Stop?> Handle(GetStopByIdQuery query)
         {
             return await stopRepository.FindByIdAsync(query.Id);
         }
-        public async Task<Stop?> Handle(GetStopByNameAndFkIdLocalityQuery query)
+        public async Task<Stop?> Handle(GetStopByNameAndFkIdDistrictQuery query)
         {
-            return await stopRepository.FindByNameAndFkIdLocalityAsync(query.Name, query.FkIdLocality);
+            return await stopRepository.FindByNameAndFkIdDistrictAsync(query.Name, query.FkIdDistrict);
         }
 
         public async Task<IEnumerable<Stop>> Handle(GetAllStopsQuery query)

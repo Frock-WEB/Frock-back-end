@@ -22,7 +22,7 @@ namespace Frock_backend.stops.Interfaces.REST.Transform
                 entity.FkIdCompany,
                 entity.Address,
                 entity.Reference,
-                entity.FkIdLocality
+                entity.FkIdDistrict
             );
     }
 }

@@ -19,8 +19,7 @@ namespace Frock_backend.stops.Interfaces.REST
     public class GeographicController(
         IRegionCommandService regionCommandService, IRegionQueryService regionQueryService,
         IProvinceCommandService provinceCommandService, IProvinceQueryService provinceQueryService,
-        IDistrictCommandService districtCommandService, IDistrictQueryService districtQueryService,
-        ILocalityCommandService localityCommandService, ILocalityQueryService localityQueryService
+        IDistrictCommandService districtCommandService, IDistrictQueryService districtQueryService
         ) : ControllerBase
 
     {
@@ -157,55 +156,5 @@ namespace Frock_backend.stops.Interfaces.REST
             var districtResources = districts.Select(DistrictResourceFromEntityAssembler.ToResourceFromEntity);
             return Ok(districtResources);
         }
-
-        // Endpoints para Localities
-        //getLocalityById
-        [HttpGet("localities/{id}")]
-        [SwaggerOperation(
-               Summary = "Gets a locality by id",
-               Description = "Gets a locality for a given identifier",
-               OperationId = "GetLocalityById")]
-        [SwaggerResponse(200, "The locality", typeof(LocalityResource))]
-        [SwaggerResponse(404, "Locality not found")]
-        public async Task<IActionResult> GetLocalityById(string id) {
-            var query = new GetLocalityByIdQuery(id);
-            var locality = await localityQueryService.Handle(query);
-            if (locality == null) {
-                return NotFound();
-            }
-            var localityResource = LocalityResourceFromEntityAssembler.ToResourceFromEntity(locality);
-            return Ok(localityResource);
-        }
-
-
-        //getAllLocalities
-        [HttpGet("localities")]
-        [SwaggerOperation(
-               Summary = "Gets all localities",
-               Description = "Gets all localities",
-               OperationId = "GetAllLocalities")]
-        [SwaggerResponse(200, "The list of localities", typeof(IEnumerable<LocalityResource>))]
-        public async Task<IActionResult> GetAllLocalities() {
-            var localities = await localityQueryService.Handle(new GetAllLocalitiesQuery());
-            var localityResources = localities.Select(LocalityResourceFromEntityAssembler.ToResourceFromEntity);
-            return Ok(localityResources);
-        }
-
-        //by district id
-        [HttpGet("localities/district/{districtId}")]
-        [SwaggerOperation(
-               Summary = "Gets localities by district id",
-               Description = "Gets all localities for a given district identifier",
-               OperationId = "GetLocalitiesByFkIdDistrict")]
-        public async Task<ActionResult> GetLocalitiesByFkIdDistrict(string districtId) {
-            var query = new GetLocalitiesByFkIdDistrictQuery(districtId);
-            var localities = await localityQueryService.Handle(query);
-            if (localities == null || !localities.Any())
-            {
-                return NotFound();
-            }
-            var localityResources = localities.Select(LocalityResourceFromEntityAssembler.ToResourceFromEntity);
-            return Ok(localityResources);
-        }        
     }
 }

@@ -108,19 +108,19 @@ namespace Frock_backend.stops.Interfaces.REST
 
 
         
-        [HttpGet("locality/{FkIdLocality}")]
+        [HttpGet("District/{FkIdDistrict}")]
         [SwaggerOperation(
-       Summary = "Gets all stops by FkIdLocality",
-       Description = "Gets a stop for a given locality identifier",
-       OperationId = "GetStopsByFkIdLocality")]
+       Summary = "Gets all stops by FkIdDistrict",
+       Description = "Gets a stop for a given District identifier",
+       OperationId = "GetStopsByFkIdDistrict")]
         [SwaggerResponse(200, "The stops were found", typeof(IEnumerable<StopResource>))] // Updated return type
         [SwaggerResponse(StatusCodes.Status200OK, "The stops were found", typeof(IEnumerable<StopResource>))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "No stops found for the locality or locality not found")] // Added 404 response
+        [SwaggerResponse(StatusCodes.Status404NotFound, "No stops found for the District or District not found")] // Added 404 response
 
-        public async Task<ActionResult> GetStopsByFkIdLocality(string FkIdLocality)
+        public async Task<ActionResult> GetStopsByFkIdDistrict(string FkIdDistrict)
         {
-            var getAllStopsByFkIdLocalityQuery = new GetAllStopsByFkIdLocalityQuery(FkIdLocality); // Corrected query
-            var result = await stopQueryService.Handle(getAllStopsByFkIdLocalityQuery);
+            var getAllStopsByFkIdDistrictQuery = new GetAllStopsByFkIdDistrictQuery(FkIdDistrict); // Corrected query
+            var result = await stopQueryService.Handle(getAllStopsByFkIdDistrictQuery);
 
             if (result == null) // This check might depend on how your service layer indicates "company not found" vs "company found but no stops"
             {
@@ -133,26 +133,26 @@ namespace Frock_backend.stops.Interfaces.REST
 
 
         //    /// <summary>
-        /// Gets a specific stop by its name and locality ID.
+        /// Gets a specific stop by its name and District ID.
         /// </summary>
-        /// <param name="FkIdLocality">The locality ID of the stop.</param>
+        /// <param name="FkIdDistrict">The District ID of the stop.</param>
         /// <param name="name">The name of the stop.</param>
         /// <returns>
         /// A response as an action result containing the stop, or not found if the stop was not found.
         /// </returns>
-        [HttpGet("locality/{FkIdLocality}/name/{Name}")]
+        [HttpGet("district/{FkIdDistrict}/name/{Name}")]
         [SwaggerOperation(
-            Summary = "Gets a stop by locality ID and name",
-            Description = "Gets a specific stop for a given locality ID and stop name",
-            OperationId = "GetStopByLocalityAndName")]
+            Summary = "Gets a stop by District ID and name",
+            Description = "Gets a specific stop for a given District ID and stop name",
+            OperationId = "GetStopByDistrictAndName")]
         [SwaggerResponse(StatusCodes.Status200OK, "The stop was found", typeof(StopResource))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "The stop was not found for the given locality and name")]
-        public async Task<ActionResult> GetStopByNameAndFkIdLocality(string FkIdLocality, string Name)
+        [SwaggerResponse(StatusCodes.Status404NotFound, "The stop was not found for the given District and name")]
+        public async Task<ActionResult> GetStopByNameAndFkIdDistrict(string FkIdDistrict, string Name)
         {
-            // Assuming GetStopByNameAndFkIdLocalityQuery takes (string Name, string fkIdLocality)
+            // Assuming GetStopByNameAndFkIdDistrictQuery takes (string Name, string fkIdDistrict)
             // Adjust if the constructor parameters are different.
-            var getStopByNameAndLocalityQuery = new GetStopByNameAndFkIdLocalityQuery(Name, FkIdLocality);
-            var result = await stopQueryService.Handle(getStopByNameAndLocalityQuery);
+            var getStopByNameAndDistrictQuery = new GetStopByNameAndFkIdDistrictQuery(Name, FkIdDistrict);
+            var result = await stopQueryService.Handle(getStopByNameAndDistrictQuery);
 
             if (result is null)
             {
