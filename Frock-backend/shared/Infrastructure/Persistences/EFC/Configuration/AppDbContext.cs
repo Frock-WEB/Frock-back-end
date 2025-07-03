@@ -146,6 +146,9 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
 
 
             builder.UseSnakeCaseNamingConvention();
+            //just a comment to commit because i forgot to add this line in the last commit
+
+            //now we use the correct naming convention for the database, it used to be in comments so thats why it was not working
         }
     }
 }
