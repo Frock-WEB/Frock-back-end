@@ -19,5 +19,42 @@ namespace Frock_backend.routes.Application.Internal.QueryServices
                 throw new Exception($"Error retrieving routes for company: {e.Message}", e);
             }
         }
+
+        public async Task<IEnumerable<RouteAggregate>> Handle(GetAllRoutesQuery query)
+        {
+            try
+            {
+                return await routeRepository.ListRoutes();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error retrieving all routes: {e.Message}", e);
+            }
+        }
+
+        public async Task<IEnumerable<RouteAggregate>> Handle(GetAllRoutesByFkDistrictIdQuery query)
+        {
+            try
+            {
+                return await routeRepository.FindByDistrictId(query.FkDistrictId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error retrieving routes for district: {e.Message}", e);
+            }
+        }
+
+        public async Task<RouteAggregate?> Handle(GetRouteByIdQuery query)
+        {
+            try
+            {
+                return await routeRepository.FindByRouteId(query.Id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error retrieving route by ID: {e.Message}", e);
+            }
+
+        }
     }
 }

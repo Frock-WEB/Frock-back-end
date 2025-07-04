@@ -4,6 +4,8 @@
     (
         int id, // The unique identifier for the stop
         string name, // The name of the stop
-        string address
+        string address,
+        int fk_company_id, // The foreign key to the company that owns the stop
+        string fk_district_id // The foreign key to the district that the stop belongs to
     );
 }

@@ -21,5 +21,34 @@ namespace Frock_backend.routes.Infrastructure.Repositories
             .Where(r => r.Stops.Any(rs => rs.Stop.FkIdCompany == companyId))
             .ToListAsync();
         }
+
+        public Task<List<RouteAggregate>> FindByDistrictId(string districtId)
+        {
+            return Context.Set<RouteAggregate>()
+            // Incluimos Stops → Stop para poder filtrar por FkIdDistrict
+            .Include(r => r.Stops)
+                .ThenInclude(rs => rs.Stop)
+            .Include(r => r.Schedules)
+            .Where(r => r.Stops.Any(rs => rs.Stop.FkIdDistrict == districtId))
+            .ToListAsync();
+        }
+
+        public Task<List<RouteAggregate>> ListRoutes()
+        {
+            return Context.Set<RouteAggregate>()
+            .Include(r => r.Stops)
+                .ThenInclude(rs => rs.Stop)
+            .Include(r => r.Schedules)
+            .ToListAsync();
+        }
+
+        public Task<RouteAggregate?> FindByRouteId(int id)
+        {
+            return Context.Set<RouteAggregate>()
+            .Include(r => r.Stops)
+                .ThenInclude(rs => rs.Stop)
+            .Include(r => r.Schedules)
+            .FirstOrDefaultAsync(r => r.Id == id);
+        }
     }
 }
