@@ -1,4 +1,5 @@
-﻿using Frock_backend.routes.Domain.Model.Queries;
+﻿using Frock_backend.routes.Domain.Model.Commands;
+using Frock_backend.routes.Domain.Model.Queries;
 using Frock_backend.routes.Domain.Service;
 using Frock_backend.routes.Interface.REST.Resources;
 using Frock_backend.routes.Interface.REST.Transform;
@@ -138,6 +139,42 @@ namespace Frock_backend.routes.Interface.REST
             var resource = RouteAggregateResourceFromResourceAssembler.ToResourceFromEntity(route);
             return Ok(resource);
 
+        }
+
+        [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Update Route",
+            Description = "Update a route by Id",
+            OperationId = "UpdateRoute"
+            )]
+        [SwaggerResponse(200, "The route was updated", typeof(RouteAggregateResource))]
+        [SwaggerResponse(404, "Route not found")]
+        public async Task<ActionResult<RouteAggregateResource>> UpdateRoute(int id, [FromBody] UpdateRouteResource resource)
+        {
+            if (resource == null)
+            {
+                return BadRequest("Resource cannot be null or ID mismatch.");
+            }
+            var updateRouteCommand = UpdateRouteCommandFromResourceAssembler.toCommandFromResource(resource);
+            var result = await routeCommandService.Handle(id, updateRouteCommand);
+            if (result is null) return NotFound("Route not found.");
+            var updatedResource = RouteAggregateResourceFromResourceAssembler.ToResourceFromEntity(result);
+            return Ok(updatedResource);
+        }
+
+        [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Delete Route",
+            Description = "Delete a route by Id",
+            OperationId = "DeleteRoute"
+            )]
+        [SwaggerResponse(204, "The route was deleted")]
+        [SwaggerResponse(404, "Route not found")]
+        public async Task<IActionResult> DeleteRoute(int id)
+        {
+            var command = new DeleteRouteCommand(id);
+            await routeCommandService.Handle(command);
+            return NoContent(); // 204 No Content response
         }
     }
 }

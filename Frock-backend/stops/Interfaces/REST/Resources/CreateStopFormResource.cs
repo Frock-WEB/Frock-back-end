@@ -23,8 +23,12 @@ namespace Frock_backend.stops.Interfaces.REST.Resources
         
         [Required]
         public string Reference { get; set; } = string.Empty;
-        
+
         [Required]
+<<<<<<< HEAD
         public int FkIdDistrict { get; set; }
+=======
+        public int FkIdDistrict { get; set; } = 0;
+>>>>>>> feature/routes
     }
 }
