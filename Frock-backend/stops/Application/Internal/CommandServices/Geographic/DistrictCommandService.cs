@@ -12,7 +12,7 @@ namespace Frock_backend.stops.Application.Internal.CommandServices.Geographic
         public async Task<District?> Handle(CreateDistrictCommand command)
         {
             var existingDistrict =
-                await districtRepository.FindByIdAsync(command.Id);
+                await districtRepository.FindByIdIntAsync(command.Id);
             if (existingDistrict != null)
             {
                 throw new Exception($"District already exists with that Id.");

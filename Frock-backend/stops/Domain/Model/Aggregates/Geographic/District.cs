@@ -4,14 +4,14 @@ namespace Frock_backend.stops.Domain.Model.Aggregates.Geographic
 {
     public class District
     {
-        public string Id { get; }
+        public int Id { get; }
         public string Name { get; set; }
-        public string FkIdProvince { get; set; }
+        public int FkIdProvince { get; set; }
         protected District()
         {
-            Id = string.Empty;
+            Id = 0;
             Name = string.Empty;
-            FkIdProvince = string.Empty;
+            FkIdProvince = 0;
         }
         public District(CreateDistrictCommand command)
         {

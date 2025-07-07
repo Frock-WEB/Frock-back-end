@@ -5,5 +5,5 @@
     /// </summary>
     /// <param name="Id">Identificador único de la región (como código reg-1)</param>
     /// <param name="Name">Nombre oficial de la región</param>
-    public record CreateRegionCommand(string Id, string Name);
+    public record CreateRegionCommand(int Id, string Name);
 }

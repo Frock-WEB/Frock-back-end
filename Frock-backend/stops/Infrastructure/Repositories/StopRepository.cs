@@ -18,13 +18,13 @@ namespace Frock_backend.stops.Infrastructure.Repositories
                 .Where(f => f.FkIdCompany == fkIdCompany)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Stop>> FindByFkIdDistrictAsync(string fkIdDistrict)
+        public async Task<IEnumerable<Stop>> FindByFkIdDistrictAsync(int fkIdDistrict)
         {
             return await Context.Set<Stop>()
                 .Where(f => f.FkIdDistrict == fkIdDistrict)
                 .ToListAsync();
         }
-        public async Task<Stop?> FindByNameAndFkIdDistrictAsync(string name, string fkIdDistrict)
+        public async Task<Stop?> FindByNameAndFkIdDistrictAsync(string name, int fkIdDistrict)
         {
             return await context.Set<Stop>()
                 .FirstOrDefaultAsync(f => f.Name == name && f.FkIdDistrict == fkIdDistrict);

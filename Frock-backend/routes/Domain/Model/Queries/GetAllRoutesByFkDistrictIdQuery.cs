@@ -1,4 +1,4 @@
 ﻿namespace Frock_backend.routes.Domain.Model.Queries
 {
-    public record GetAllRoutesByFkDistrictIdQuery(string FkDistrictId);
+    public record GetAllRoutesByFkDistrictIdQuery(int FkDistrictId);
 }

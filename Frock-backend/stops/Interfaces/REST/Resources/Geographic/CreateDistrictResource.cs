@@ -1,8 +1,8 @@
 ﻿namespace Frock_backend.stops.Interfaces.REST.Resources.Geographic
 {
     public record CreateDistrictResource(
-        string Id,
+        int Id,
         string Name,
-        string FkIdProvince
+        int FkIdProvince
         );
 }

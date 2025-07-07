@@ -22,7 +22,7 @@ namespace Frock_backend.routes.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public Task<List<RouteAggregate>> FindByDistrictId(string districtId)
+        public Task<List<RouteAggregate>> FindByDistrictId(int districtId)
         {
             return Context.Set<RouteAggregate>()
             // Incluimos Stops → Stop para poder filtrar por FkIdDistrict

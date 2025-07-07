@@ -63,6 +63,8 @@ using Frock_backend.routes.Application.Internal.QueryServices;
 using Frock_backend.shared.Domain.Services;
 using Frock_backend.shared.Infrastructure.Configuration;
 using Frock_backend.shared.Infrastructure.Services;
+using Frock_backend.stops.Application.External;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -197,7 +199,13 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 //Routes
     builder.Services.AddScoped<IRouteRepository, RouteRepository>();
     builder.Services.AddScoped<IRouteCommandService, RouteCommandService>();
-    builder.Services.AddScoped<IRouteQueryService, RouteQueryService>();
+builder.Services.AddScoped<IRouteQueryService, RouteQueryService>();
+
+//GEOSERVICE
+    builder.Services.AddHttpClient<IGeoImportService, GeoImportService>(client =>
+    {
+        client.BaseAddress = new Uri(builder.Configuration["GeoApi:BaseUrl"]);
+    });
 //Seeding Service Geographic Data
 // Datos iniciales fijos de datos geográficos
 builder.Services.AddScoped<GeographicDataSeeder>();
