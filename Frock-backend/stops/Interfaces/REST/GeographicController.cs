@@ -94,7 +94,7 @@ namespace Frock_backend.stops.Interfaces.REST
                Description = "Gets a province for a given region identifier",
                OperationId = "GetProvincesByFkIdRegion")]
         [SwaggerResponse(200, "The list of provinces", typeof(IEnumerable<RegionResource>))]
-        public async Task<IActionResult> GetProvincesByFkIdRegion(string regionId) {
+        public async Task<IActionResult> GetProvincesByFkIdRegion(int regionId) {
 
             var query = new GetProvincesByFkIdRegionQuery(regionId);
             var provinces = await provinceQueryService.Handle(query);
@@ -117,7 +117,7 @@ namespace Frock_backend.stops.Interfaces.REST
                OperationId = "GetDistrictById")]
         [SwaggerResponse(200, "The district", typeof(DistrictResource))]
         [SwaggerResponse(404, "District not found")]
-        public async Task<IActionResult> GetDistrictById(string id) {
+        public async Task<IActionResult> GetDistrictById(int id) {
             var query = new GetDistrictByIdQuery(id);
             var district = await districtQueryService.Handle(query);
             if (district == null) {
@@ -146,7 +146,7 @@ namespace Frock_backend.stops.Interfaces.REST
                Summary = "Gets districts by province id",
                Description = "Gets all districts for a given province identifier",
                OperationId = "GetDistrictsByFkIdProvince")]
-        public async Task<ActionResult> GetDistrictsByFkIdProvince(string provinceId) {
+        public async Task<ActionResult> GetDistrictsByFkIdProvince(int provinceId) {
             var query = new GetDistrictsByFkIdProvinceQuery(provinceId);
             var districts = await districtQueryService.Handle(query);
             if (districts == null || !districts.Any())

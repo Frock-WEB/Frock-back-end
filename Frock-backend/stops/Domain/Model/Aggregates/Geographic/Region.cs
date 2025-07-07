@@ -4,12 +4,12 @@ namespace Frock_backend.stops.Domain.Model.Aggregates.Geographic
 {
     public class Region
     {
-        public string Id { get; }
+        public int Id { get; }
         public string Name { get; set; }
 
         protected Region()
         { 
-            Id = string.Empty;
+            Id = 0;
             Name = string.Empty;
         }
         public Region(CreateRegionCommand command)

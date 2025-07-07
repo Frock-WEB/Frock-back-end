@@ -24,6 +24,10 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Repositories
         {
             return await Context.Set<TEntity>().FindAsync(id);
         }
+        public async Task<TEntity?> FindByIdIntAsync(int id)
+        {
+            return await Context.Set<TEntity>().FindAsync(id);
+        }
 
         /// <inheritdoc />
         public void Update(TEntity entity)

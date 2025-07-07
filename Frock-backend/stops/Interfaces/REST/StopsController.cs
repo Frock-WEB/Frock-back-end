@@ -117,7 +117,7 @@ namespace Frock_backend.stops.Interfaces.REST
         [SwaggerResponse(StatusCodes.Status200OK, "The stops were found", typeof(IEnumerable<StopResource>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "No stops found for the District or District not found")] // Added 404 response
 
-        public async Task<ActionResult> GetStopsByFkIdDistrict(string FkIdDistrict)
+        public async Task<ActionResult> GetStopsByFkIdDistrict(int FkIdDistrict)
         {
             var getAllStopsByFkIdDistrictQuery = new GetAllStopsByFkIdDistrictQuery(FkIdDistrict); // Corrected query
             var result = await stopQueryService.Handle(getAllStopsByFkIdDistrictQuery);
@@ -147,7 +147,7 @@ namespace Frock_backend.stops.Interfaces.REST
             OperationId = "GetStopByDistrictAndName")]
         [SwaggerResponse(StatusCodes.Status200OK, "The stop was found", typeof(StopResource))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "The stop was not found for the given District and name")]
-        public async Task<ActionResult> GetStopByNameAndFkIdDistrict(string FkIdDistrict, string Name)
+        public async Task<ActionResult> GetStopByNameAndFkIdDistrict(int FkIdDistrict, string Name)
         {
             // Assuming GetStopByNameAndFkIdDistrictQuery takes (string Name, string fkIdDistrict)
             // Adjust if the constructor parameters are different.

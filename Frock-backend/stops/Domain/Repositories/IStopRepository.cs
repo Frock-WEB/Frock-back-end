@@ -6,7 +6,7 @@ namespace Frock_backend.stops.Domain.Repositories
     public interface IStopRepository : IBaseRepository<Stop>
     {
         Task<IEnumerable<Stop>> FindByFkIdCompanyAsync(int fkIdCompany);
-        Task<IEnumerable<Stop>> FindByFkIdDistrictAsync(string fkIdDistrict);
-        Task<Stop?> FindByNameAndFkIdDistrictAsync(string name, string fkIdDistrict);
+        Task<IEnumerable<Stop>> FindByFkIdDistrictAsync(int fkIdDistrict);
+        Task<Stop?> FindByNameAndFkIdDistrictAsync(string name, int fkIdDistrict);
     }
 }
