@@ -3,6 +3,7 @@ using Frock_backend.transport_Company.Domain.Model.Queries;
 using Frock_backend.transport_Company.Domain.Services;
 using Frock_backend.transport_Company.Interfaces.REST.Resources;
 using Frock_backend.transport_Company.Interfaces.REST.Transform;
+using Frock_backend.shared.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
@@ -13,29 +14,55 @@ namespace Frock_backend.transport_Company.Interfaces.REST
     [Route("api/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Tags("Companies")]
-    public class CompaniesController(ICompanyCommandService commandService, ICompanyQueryService queryService) : ControllerBase
+    public class CompaniesController(
+        ICompanyCommandService commandService, 
+        ICompanyQueryService queryService,
+        ICloudinaryService cloudinaryService) : ControllerBase
     {
         /// <summary>
-        /// Creates a new company.
+        /// Creates a new company with optional logo upload.
         /// </summary>
-        /// <param name="resource">The data for the new company.</param>
+        /// <param name="resource">The company data including optional logo file</param>
         /// <returns>The newly created company resource.</returns>
         [HttpPost]
+        [Consumes("multipart/form-data")]
         [SwaggerOperation(
-            Summary = "Creates a new company.",
-            Description = "Creates a new company with the given parameters.",
+            Summary = "Creates a new company with optional logo upload.",
+            Description = "Creates a new company with the given parameters and optionally uploads logo to Cloudinary.",
             OperationId = "CreateCompany")]
         [SwaggerResponse(StatusCodes.Status201Created, "The company was created.", typeof(CompanyResource))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "The company could not be created due to invalid data.")]
-        public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyResource resource)
+        public async Task<IActionResult> CreateCompany([FromForm] CreateCompanyFormResource resource)
         {
-            var createCompanyCommand = CreateCompanyCommandFromResourceAssembler.ToCommandFromResource(resource);
-            var company = await commandService.Handle(createCompanyCommand);
+            try
+            {
+                string logoUrl = string.Empty;
 
-            if (company is null) return BadRequest();
+                // Subir imagen a Cloudinary si se proporciona
+                if (resource.LogoFile != null && resource.LogoFile.Length > 0)
+                {
+                    logoUrl = await cloudinaryService.UploadImageAsync(resource.LogoFile, "companies");
+                }
 
-            var companyResource = CompanyResourceFromEntityAssembler.ToResourceFromEntity(company);
-            return CreatedAtAction(nameof(GetCompanyById), new { id = company.Id }, companyResource);
+                // Crear el resource usando los parámetros
+                var createCompanyResource = new CreateCompanyResource(
+                    resource.Name,
+                    logoUrl,
+                    resource.FkIdUser
+                );
+
+                var createCompanyCommand = CreateCompanyCommandFromResourceAssembler.ToCommandFromResource(createCompanyResource);
+                var company = await commandService.Handle(createCompanyCommand);
+
+                if (company is null) return BadRequest("Could not create company");
+
+                var companyResource = CompanyResourceFromEntityAssembler.ToResourceFromEntity(company);
+                return CreatedAtAction(nameof(GetCompanyById), new { id = company.Id }, companyResource);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -63,7 +90,6 @@ namespace Frock_backend.transport_Company.Interfaces.REST
             OperationId = "CheckUserCompany")]
         [SwaggerResponse(StatusCodes.Status200OK, "The user has a company.", typeof(object))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "The user does not have a company.")]
-        
         public async Task<IActionResult> CheckUserCompany(int FKeyIdUser)
         {
             var getCompanyByUserQuery = new GetCompanyByFkIdUserQuery(FKeyIdUser);
@@ -95,7 +121,6 @@ namespace Frock_backend.transport_Company.Interfaces.REST
             return Ok(resource);
         }
         
-        
         /// <summary>
         /// Updates an existing company.
         /// </summary>
@@ -122,8 +147,6 @@ namespace Frock_backend.transport_Company.Interfaces.REST
             var companyResource = CompanyResourceFromEntityAssembler.ToResourceFromEntity(updatedCompany);
             return Ok(companyResource);
         }
-        
-        
 
         /// <summary>
         /// Deletes a company by its ID.
