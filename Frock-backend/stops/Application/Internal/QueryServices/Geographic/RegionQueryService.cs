@@ -13,7 +13,7 @@ namespace Frock_backend.stops.Application.Internal.QueryServices.Geographic
         }
         public async Task<Region?> Handle(GetRegionByIdQuery query)
         {
-            return await regionRepository.FindByIdAsync(query.Id);
+            return await regionRepository.FindByIdIntAsync(query.Id);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Frock_backend.stops.Interfaces.REST
                 OperationId = "GetRegionById")]
         [SwaggerResponse(StatusCodes.Status200OK, "The region", typeof(RegionResource))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Region not found")]
-        public async Task<IActionResult> GetRegionById(string id) {
+        public async Task<IActionResult> GetRegionById(int id) {
             var query = new GetRegionByIdQuery(id);
             var region = await regionQueryService.Handle(query);
             if (region == null) {
@@ -64,7 +64,7 @@ namespace Frock_backend.stops.Interfaces.REST
                OperationId = "GetProvinceById")]
         [SwaggerResponse(200, "The province", typeof(ProvinceResource))]
         [SwaggerResponse(404, "Province not found")]
-        public async Task<IActionResult> GetProvinceById(string id) {
+        public async Task<IActionResult> GetProvinceById(int id) {
             var query = new GetProvinceByIdQuery(id);
             var province = await provinceQueryService.Handle(query);
             if (province == null) {
