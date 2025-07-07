@@ -60,7 +60,11 @@ using Frock_backend.routes.Infrastructure.Repositories;
 using Frock_backend.routes.Domain.Service;
 using Frock_backend.routes.Application.Internal.CommandServices;
 using Frock_backend.routes.Application.Internal.QueryServices;
+using Frock_backend.shared.Domain.Services;
+using Frock_backend.shared.Infrastructure.Configuration;
+using Frock_backend.shared.Infrastructure.Services;
 using Frock_backend.stops.Application.External;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -212,11 +216,15 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("https://deft-tapioca-c27a9c.netlify.app")//ajustar
+        policy.WithOrigins("http://localhost:5173")//ajustar
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
+// Cloudinary Configuration
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 var app = builder.Build();
 
