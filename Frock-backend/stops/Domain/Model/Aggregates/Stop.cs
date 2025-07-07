@@ -12,7 +12,7 @@ namespace Frock_backend.stops.Domain.Model.Aggregates
         public int FkIdCompany { get;  set; }
         public string Address { get;  set; }
         public string Reference { get;  set; }
-        public string FkIdLocality { get;  set; }
+        public int FkIdDistrict { get;  set; }
 
         protected Stop()
         {
@@ -23,13 +23,15 @@ namespace Frock_backend.stops.Domain.Model.Aggregates
             FkIdCompany = 0;
             Address = string.Empty;
             Reference = string.Empty;
-            FkIdLocality = string.Empty;
+            FkIdDistrict = 0;
         }
-        public Stop(int id, string name, string address)
+        public Stop(int id, string name, string address, int fk_id_company, int fk_id_district)
         {
             this.Id = id;
             this.Name = name;
             this.Address = address;
+            this.FkIdCompany = fk_id_company;
+            this.FkIdDistrict = fk_id_district;
         }
         public Stop(CreateStopCommand command)
         {
@@ -40,7 +42,7 @@ namespace Frock_backend.stops.Domain.Model.Aggregates
             FkIdCompany = command.FkIdCompany;
             Address = command.Address;
             Reference = command.Reference;
-            FkIdLocality = command.FkIdLocality;
+            FkIdDistrict = command.FkIdDistrict;
         }
 
         public Stop(UpdateStopCommand command)
@@ -53,7 +55,7 @@ namespace Frock_backend.stops.Domain.Model.Aggregates
             FkIdCompany = command.FkIdCompany;
             Address = command.Address;
             Reference = command.Reference;
-            FkIdLocality = command.FkIdLocality;
+            FkIdDistrict = command.FkIdDistrict;
         }
 
         public Stop(DeleteStopCommand command)
@@ -66,7 +68,7 @@ namespace Frock_backend.stops.Domain.Model.Aggregates
             FkIdCompany = 0;
             Address = "";
             Reference = "";
-            FkIdLocality = "";
+            FkIdDistrict = 0;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Frock_backend.stops.Infrastructure.Repositories.Geographic
 {
     public class DistrictRepository(AppDbContext context) : BaseStringRepository<District>(context), IDistrictRepository
     {
-        public async Task<IEnumerable<District>> FindByFkIdProvinceAsync(string fkIdProvince)
+        public async Task<IEnumerable<District>> FindByFkIdProvinceAsync(int fkIdProvince)
         {
             return await Context.Set<District>()
                 .Where(f => f.FkIdProvince == fkIdProvince)

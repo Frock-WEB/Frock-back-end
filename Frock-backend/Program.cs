@@ -60,6 +60,11 @@ using Frock_backend.routes.Infrastructure.Repositories;
 using Frock_backend.routes.Domain.Service;
 using Frock_backend.routes.Application.Internal.CommandServices;
 using Frock_backend.routes.Application.Internal.QueryServices;
+using Frock_backend.shared.Domain.Services;
+using Frock_backend.shared.Infrastructure.Configuration;
+using Frock_backend.shared.Infrastructure.Services;
+using Frock_backend.stops.Application.External;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -185,9 +190,6 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
     builder.Services.AddScoped<IDistrictCommandService, DistrictCommandService>();
     builder.Services.AddScoped<IDistrictQueryService, DistrictQueryService>();
         /**/
-    builder.Services.AddScoped<ILocalityRepository, LocalityRepository>();
-    builder.Services.AddScoped<ILocalityCommandService, LocalityCommandService>();
-    builder.Services.AddScoped<ILocalityQueryService, LocalityQueryService>();
 
 //Stops
     builder.Services.AddScoped<IStopRepository, StopRepository>();
@@ -197,7 +199,13 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 //Routes
     builder.Services.AddScoped<IRouteRepository, RouteRepository>();
     builder.Services.AddScoped<IRouteCommandService, RouteCommandService>();
-    builder.Services.AddScoped<IRouteQueryService, RouteQueryService>();
+builder.Services.AddScoped<IRouteQueryService, RouteQueryService>();
+
+//GEOSERVICE
+    builder.Services.AddHttpClient<IGeoImportService, GeoImportService>(client =>
+    {
+        client.BaseAddress = new Uri(builder.Configuration["GeoApi:BaseUrl"]);
+    });
 //Seeding Service Geographic Data
 // Datos iniciales fijos de datos geográficos
 builder.Services.AddScoped<GeographicDataSeeder>();
@@ -208,11 +216,15 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("https://deft-tapioca-c27a9c.netlify.app")//ajustar
+        policy.WithOrigins("http://localhost:5173")//ajustar
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
+// Cloudinary Configuration
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 var app = builder.Build();
 

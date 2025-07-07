@@ -10,7 +10,7 @@ namespace Frock_backend.routes.Interface.REST.Transform
                 routeAggregate.Price,
                 routeAggregate.Frequency,
                 routeAggregate.Duration,
-                routeAggregate.Stops.Select(stop => new StopInRoutesResource(stop.Id, stop.Stop.Name, stop.Stop.Address)).ToList(),
+                routeAggregate.Stops.Select(stop => new StopInRoutesResource(stop.Id, stop.Stop.Name, stop.Stop.Address, stop.Stop.FkIdCompany, stop.Stop.FkIdDistrict)).ToList(),
                 routeAggregate.Schedules.Select(schedule => new ScheduleResource(schedule.Id, schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, schedule.Enabled)).ToList()
             );
     

@@ -77,17 +77,6 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //LOCALITY
-            builder.Entity<Locality>().HasKey(f => f.Id);
-            builder.Entity<Locality>().Property(f => f.Id).IsRequired();
-            builder.Entity<Locality>().Property(f => f.Name).IsRequired();
-            builder.Entity<Locality>()
-                .HasOne<District>()
-                .WithMany()
-                .HasForeignKey(l => l.FkIdDistrict)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-
             //STOP
             builder.Entity<Stop>().HasKey(f => f.Id);
             builder.Entity<Stop>().Property(f => f.Id).IsRequired().ValueGeneratedOnAdd();
@@ -98,7 +87,6 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
             builder.Entity<Stop>().Property(f => f.Address).IsRequired();
             builder.Entity<Stop>().Property(f => f.Reference).IsRequired();
 
-
             builder.Entity<Stop>()
                 .HasOne<Company>() // Un Stop tiene una Company
                 .WithMany() // Una Company tiene muchos Stops
@@ -106,9 +94,9 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Stop>()
-                .HasOne<Locality>() // Un Stop tiene una Locality
-                .WithMany() // Una Locality tiene muchos Stops
-                .HasForeignKey(f => f.FkIdLocality)
+                .HasOne<District>() // Un Stop tiene una District
+                .WithMany() // Una District tiene muchos Stops
+                .HasForeignKey(f => f.FkIdDistrict)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -157,7 +145,10 @@ namespace Frock_backend.shared.Infrastructure.Persistences.EFC.Configuration
             });
 
 
-            //builder.UseSnakeCaseNamingConvention();
+            builder.UseSnakeCaseNamingConvention();
+            //just a comment to commit because i forgot to add this line in the last commit
+
+            //now we use the correct naming convention for the database, it used to be in comments so thats why it was not working
         }
     }
 }

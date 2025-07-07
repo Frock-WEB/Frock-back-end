@@ -23,12 +23,6 @@ namespace Frock_backend.stops.Domain.Services.Geographic
         /// </summary>
         Task<IEnumerable<District>> Handle(GetDistrictsByFkIdProvinceQuery query);
 
-        /// <summary>
-        /// Obtiene todas las localidades por distrito.
-        /// </summary>
-        Task<IEnumerable<Locality>> Handle(GetLocalitiesByFkIdDistrictQuery query);
-
-
 
         //ESTO DESPUES
         /// <summary>

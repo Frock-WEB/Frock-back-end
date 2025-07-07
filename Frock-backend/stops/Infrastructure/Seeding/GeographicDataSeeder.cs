@@ -1,33 +1,35 @@
-﻿using Frock_backend.stops.Domain.Model.Aggregates.Geographic;
+﻿// Infrastructure/Seeding/GeographicDataSeeder.cs
 using Frock_backend.stops.Domain.Model.Commands.Geographic;
 using Frock_backend.stops.Domain.Model.Queries.Geographic;
+using Frock_backend.stops.Domain.Services;
 using Frock_backend.stops.Domain.Services.Geographic;
+using Frock_backend.stops.Domain.Model.DTOs;
 using Microsoft.Extensions.Logging;
 
 namespace Frock_backend.stops.Infrastructure.Seeding
 {
     public class GeographicDataSeeder
     {
+        private readonly IGeoImportService _geoImportService;
         private readonly IRegionCommandService _regionCommandService;
         private readonly IRegionQueryService _regionQueryService;
         private readonly IProvinceCommandService _provinceCommandService;
         private readonly IDistrictCommandService _districtCommandService;
-        private readonly ILocalityCommandService _localityCommandService;
         private readonly ILogger<GeographicDataSeeder> _logger;
 
         public GeographicDataSeeder(
+            IGeoImportService geoImportService,
             IRegionCommandService regionCommandService,
             IRegionQueryService regionQueryService,
             IProvinceCommandService provinceCommandService,
             IDistrictCommandService districtCommandService,
-            ILocalityCommandService localityCommandService,
             ILogger<GeographicDataSeeder> logger)
         {
+            _geoImportService = geoImportService;
             _regionCommandService = regionCommandService;
             _regionQueryService = regionQueryService;
             _provinceCommandService = provinceCommandService;
             _districtCommandService = districtCommandService;
-            _localityCommandService = localityCommandService;
             _logger = logger;
         }
 
@@ -35,110 +37,49 @@ namespace Frock_backend.stops.Infrastructure.Seeding
         {
             _logger.LogInformation("Iniciando la carga de datos geográficos...");
 
-            // Verificar si ya existen datos
-            var existingRegions = await _regionQueryService.Handle(new GetAllRegionsQuery());
-            if (existingRegions.Any())
+            if ((await _regionQueryService.Handle(new GetAllRegionsQuery())).Any())
             {
                 _logger.LogInformation("Los datos geográficos ya están cargados.");
                 return;
             }
 
-            // Cargar regiones
-            await SeedRegionsAsync();
-            
-            // Cargar provincias
-            await SeedProvincesAsync();
-            
-            // Cargar distritos
-            await SeedDistrictsAsync();
-            
-            // Cargar localidades
-            await SeedLocalitiesAsync();
-            
+            // 1) Traer todo desde la API
+            IEnumerable<GeoResponseDto> raw = await _geoImportService.GetGeoFromApi();
+
+            // 2) Cargar regiones
+            var regiones = raw
+                .Select(x => new {
+                    Id = int.Parse(x.CODIGO.Substring(0, 2)),
+                    Name = x.NOMBDEP!
+                })
+                .DistinctBy(r => r.Id);
+
+            foreach (var r in regiones)
+                await _regionCommandService.Handle(new CreateRegionCommand(r.Id, r.Name));
+
+            // 3) Cargar provincias
+            var provincias = raw
+                .Select(x => new {
+                    Id = int.Parse(x.CODIGO.Substring(0, 4)),
+                    Name = x.NOMBPROV!,
+                    RegionId = int.Parse(x.CODIGO.Substring(0, 2))
+                })
+                .DistinctBy(p => p.Id);
+
+            foreach (var p in provincias)
+                await _provinceCommandService.Handle(new CreateProvinceCommand(p.Id, p.Name, p.RegionId));
+
+            // 4) Cargar distritos
+            var distritos = raw.Select(x => new {
+                Id = int.Parse(x.CODIGO),
+                Name = x.NOMBDIST!,
+                ProvinceId = int.Parse(x.CODIGO.Substring(0, 4))
+            });
+
+            foreach (var d in distritos)
+                await _districtCommandService.Handle(new CreateDistrictCommand(d.Id, d.Name, d.ProvinceId));
+
             _logger.LogInformation("Carga de datos geográficos completada con éxito.");
-        }
-
-        private async Task SeedRegionsAsync()
-        {
-            _logger.LogInformation("Cargando regiones...");
-            
-            var regions = new List<CreateRegionCommand>
-            {
-                new("reg-1", "Madre De Dios"),
-                new("reg-2", "Lima"),
-                new("reg-3", "La Libertad"),
-                new("reg-4", "Ancash"),
-                new("reg-5", "Ica"),
-                new("reg-6", "Puno"),
-                new("reg-7", "Arequipa"),
-                new("reg-8", "Cusco"),
-                new("reg-9", "Huánuco"),
-                new("reg-10", "Ayacucho"),
-                new("reg-11", "Amazonas"),
-                new("reg-12", "Lambayeque"),
-                new("reg-13", "Tacna"),
-                new("reg-14", "Junín")
-                // Agrega más regiones según necesites
-            };
-
-            foreach (var region in regions)
-            {
-                await _regionCommandService.Handle(region);
-            }
-        }
-
-        private async Task SeedProvincesAsync()
-        {
-            _logger.LogInformation("Cargando provincias...");
-            
-            var provinces = new List<CreateProvinceCommand>
-            {
-                new("prov-1", "Santiago", "reg-1"),
-                new("prov-2", "Valparaíso", "reg-2"),
-                new("prov-3", "Talca", "reg-3")
-                // Agrega más provincias según necesites
-            };
-
-            foreach (var province in provinces)
-            {
-                await _provinceCommandService.Handle(province);
-            }
-        }
-
-        private async Task SeedDistrictsAsync()
-        {
-            _logger.LogInformation("Cargando distritos...");
-            
-            var districts = new List<CreateDistrictCommand>
-            {
-                new("dist-1", "Santiago Centro", "prov-1"),
-                new("dist-2", "Providencia", "prov-2"),
-                new("dist-3", "Valparaíso Centro", "prov-3"),
-                // Agrega más distritos según necesites
-            };
-
-            foreach (var district in districts)
-            {
-                await _districtCommandService.Handle(district);
-            }
-        }
-
-        private async Task SeedLocalitiesAsync()
-        {
-            _logger.LogInformation("Cargando localidades...");
-            
-            var localities = new List<CreateLocalityCommand>
-            {
-                new("loc-1", "Plaza de Armas", "dist-1"),
-                new("loc-2", "Barrio Bellavista", "dist-2"),
-                new("loc-3", "Cerro Alegre", "dist-3"),
-                // Agrega más localidades según necesites
-            };
-
-            foreach (var locality in localities)
-            {
-                await _localityCommandService.Handle(locality);
-            }
         }
     }
 }

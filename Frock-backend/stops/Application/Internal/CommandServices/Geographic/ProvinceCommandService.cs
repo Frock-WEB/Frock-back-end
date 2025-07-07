@@ -11,7 +11,7 @@ namespace Frock_backend.stops.Application.Internal.CommandServices.Geographic
         public async Task<Province?> Handle(CreateProvinceCommand command)
         {
             var existingProvince =
-                await provinceRepository.FindByIdAsync(command.Id);
+                await provinceRepository.FindByIdIntAsync(command.Id);
             if (existingProvince != null)
             {
                 throw new Exception($"Province already exists with that Id.");

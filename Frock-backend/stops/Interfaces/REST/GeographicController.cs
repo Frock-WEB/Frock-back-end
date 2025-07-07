@@ -19,8 +19,7 @@ namespace Frock_backend.stops.Interfaces.REST
     public class GeographicController(
         IRegionCommandService regionCommandService, IRegionQueryService regionQueryService,
         IProvinceCommandService provinceCommandService, IProvinceQueryService provinceQueryService,
-        IDistrictCommandService districtCommandService, IDistrictQueryService districtQueryService,
-        ILocalityCommandService localityCommandService, ILocalityQueryService localityQueryService
+        IDistrictCommandService districtCommandService, IDistrictQueryService districtQueryService
         ) : ControllerBase
 
     {
@@ -33,7 +32,7 @@ namespace Frock_backend.stops.Interfaces.REST
                 OperationId = "GetRegionById")]
         [SwaggerResponse(StatusCodes.Status200OK, "The region", typeof(RegionResource))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Region not found")]
-        public async Task<IActionResult> GetRegionById(string id) {
+        public async Task<IActionResult> GetRegionById(int id) {
             var query = new GetRegionByIdQuery(id);
             var region = await regionQueryService.Handle(query);
             if (region == null) {
@@ -65,7 +64,7 @@ namespace Frock_backend.stops.Interfaces.REST
                OperationId = "GetProvinceById")]
         [SwaggerResponse(200, "The province", typeof(ProvinceResource))]
         [SwaggerResponse(404, "Province not found")]
-        public async Task<IActionResult> GetProvinceById(string id) {
+        public async Task<IActionResult> GetProvinceById(int id) {
             var query = new GetProvinceByIdQuery(id);
             var province = await provinceQueryService.Handle(query);
             if (province == null) {
@@ -95,7 +94,7 @@ namespace Frock_backend.stops.Interfaces.REST
                Description = "Gets a province for a given region identifier",
                OperationId = "GetProvincesByFkIdRegion")]
         [SwaggerResponse(200, "The list of provinces", typeof(IEnumerable<RegionResource>))]
-        public async Task<IActionResult> GetProvincesByFkIdRegion(string regionId) {
+        public async Task<IActionResult> GetProvincesByFkIdRegion(int regionId) {
 
             var query = new GetProvincesByFkIdRegionQuery(regionId);
             var provinces = await provinceQueryService.Handle(query);
@@ -118,7 +117,7 @@ namespace Frock_backend.stops.Interfaces.REST
                OperationId = "GetDistrictById")]
         [SwaggerResponse(200, "The district", typeof(DistrictResource))]
         [SwaggerResponse(404, "District not found")]
-        public async Task<IActionResult> GetDistrictById(string id) {
+        public async Task<IActionResult> GetDistrictById(int id) {
             var query = new GetDistrictByIdQuery(id);
             var district = await districtQueryService.Handle(query);
             if (district == null) {
@@ -147,7 +146,7 @@ namespace Frock_backend.stops.Interfaces.REST
                Summary = "Gets districts by province id",
                Description = "Gets all districts for a given province identifier",
                OperationId = "GetDistrictsByFkIdProvince")]
-        public async Task<ActionResult> GetDistrictsByFkIdProvince(string provinceId) {
+        public async Task<ActionResult> GetDistrictsByFkIdProvince(int provinceId) {
             var query = new GetDistrictsByFkIdProvinceQuery(provinceId);
             var districts = await districtQueryService.Handle(query);
             if (districts == null || !districts.Any())
@@ -157,55 +156,5 @@ namespace Frock_backend.stops.Interfaces.REST
             var districtResources = districts.Select(DistrictResourceFromEntityAssembler.ToResourceFromEntity);
             return Ok(districtResources);
         }
-
-        // Endpoints para Localities
-        //getLocalityById
-        [HttpGet("localities/{id}")]
-        [SwaggerOperation(
-               Summary = "Gets a locality by id",
-               Description = "Gets a locality for a given identifier",
-               OperationId = "GetLocalityById")]
-        [SwaggerResponse(200, "The locality", typeof(LocalityResource))]
-        [SwaggerResponse(404, "Locality not found")]
-        public async Task<IActionResult> GetLocalityById(string id) {
-            var query = new GetLocalityByIdQuery(id);
-            var locality = await localityQueryService.Handle(query);
-            if (locality == null) {
-                return NotFound();
-            }
-            var localityResource = LocalityResourceFromEntityAssembler.ToResourceFromEntity(locality);
-            return Ok(localityResource);
-        }
-
-
-        //getAllLocalities
-        [HttpGet("localities")]
-        [SwaggerOperation(
-               Summary = "Gets all localities",
-               Description = "Gets all localities",
-               OperationId = "GetAllLocalities")]
-        [SwaggerResponse(200, "The list of localities", typeof(IEnumerable<LocalityResource>))]
-        public async Task<IActionResult> GetAllLocalities() {
-            var localities = await localityQueryService.Handle(new GetAllLocalitiesQuery());
-            var localityResources = localities.Select(LocalityResourceFromEntityAssembler.ToResourceFromEntity);
-            return Ok(localityResources);
-        }
-
-        //by district id
-        [HttpGet("localities/district/{districtId}")]
-        [SwaggerOperation(
-               Summary = "Gets localities by district id",
-               Description = "Gets all localities for a given district identifier",
-               OperationId = "GetLocalitiesByFkIdDistrict")]
-        public async Task<ActionResult> GetLocalitiesByFkIdDistrict(string districtId) {
-            var query = new GetLocalitiesByFkIdDistrictQuery(districtId);
-            var localities = await localityQueryService.Handle(query);
-            if (localities == null || !localities.Any())
-            {
-                return NotFound();
-            }
-            var localityResources = localities.Select(LocalityResourceFromEntityAssembler.ToResourceFromEntity);
-            return Ok(localityResources);
-        }        
     }
 }

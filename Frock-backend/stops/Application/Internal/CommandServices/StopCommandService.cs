@@ -23,15 +23,15 @@ namespace Frock_backend.stops.Application.Internal.CommandServices
         public async Task<Stop?> Handle(CreateStopCommand command)
         {
             var existingStop =
-                await stopRepository.FindByNameAndFkIdLocalityAsync(command.Name, command.FkIdLocality);
+                await stopRepository.FindByNameAndFkIdDistrictAsync(command.Name, command.FkIdDistrict);
             // Note: The XML doc for IStopCommandService.Handle(CreateStopCommand) suggests an upsert behavior.
             // The current code throws if it exists. This is a discrepancy.
             // Keeping the throw behavior as per the current code for this example.
             if (existingStop != null)
             {
-                // logger?.LogWarning("Create failed: Stop with name {StopName} already exists for locality {LocalityId}.", command.Name, command.FkIdLocality);
+                // logger?.LogWarning("Create failed: Stop with name {StopName} already exists for District {DistrictId}.", command.Name, command.FkIdDistrict);
                 // Consider a custom exception type for "already exists"
-                throw new Exception($"Stop with name '{command.Name}' already exists for locality '{command.FkIdLocality}'.");
+                throw new Exception($"Stop with name '{command.Name}' already exists for District '{command.FkIdDistrict}'.");
             }
 
             var newStop = new Stop(command);
@@ -43,7 +43,7 @@ namespace Frock_backend.stops.Application.Internal.CommandServices
             }
             catch (Exception e)
             {
-                // logger?.LogError(e, "Error creating stop with name {StopName} for locality {LocalityId}.", command.Name, command.FkIdLocality);
+                // logger?.LogError(e, "Error creating stop with name {StopName} for District {DistrictId}.", command.Name, command.FkIdDistrict);
                 return null; // Signal failure to the controller
             }
         }
@@ -65,7 +65,7 @@ namespace Frock_backend.stops.Application.Internal.CommandServices
             stopToUpdate.FkIdCompany = command.FkIdCompany;
             stopToUpdate.Address = command.Address;
             stopToUpdate.Reference = command.Reference;
-            stopToUpdate.FkIdLocality = command.FkIdLocality;
+            stopToUpdate.FkIdDistrict = command.FkIdDistrict;
 
             try
             {

@@ -13,7 +13,7 @@ namespace Frock_backend.stops.Application.Internal.QueryServices.Geographic
         }
         public async Task<Province?> Handle(GetProvinceByIdQuery query)
         {
-            return await provinceRepository.FindByIdAsync(query.Id);
+            return await provinceRepository.FindByIdIntAsync(query.Id);
         }
 
         public async Task<IEnumerable<Province>> Handle(GetProvincesByFkIdRegionQuery query)

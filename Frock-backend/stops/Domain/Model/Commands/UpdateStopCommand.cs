@@ -9,6 +9,6 @@
         int FkIdCompany, // This is a foreign key to a Company entity
         string Address, // The address of the stop
         string Reference, // A reference or additional information about the stop
-        string FkIdLocality // This is a foreign key to a Locality entity
+        int FkIdDistrict // This is a foreign key to a district entity
         );
 }

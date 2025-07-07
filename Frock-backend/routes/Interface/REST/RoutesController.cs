@@ -19,7 +19,7 @@ namespace Frock_backend.routes.Interface.REST
     public class RoutesController(IRouteCommandService routeCommandService, IRouteQueryService routeQueryService) : ControllerBase
     {
         /// <summary>
-        /// Creates a new stop.
+        /// Creates a new route.
         /// </summary>
         /// <param name="resource">The CreateStopResource resource</param>
         /// <returns>
@@ -27,12 +27,12 @@ namespace Frock_backend.routes.Interface.REST
         /// </returns>
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Creates a new stop.",
-            Description = "Creates a new stop with a given parameters",
-            OperationId = "CreateStop"
+            Summary = "Creates a new route.",
+            Description = "Creates a new route with a given parameters",
+            OperationId = "Create route"
             )]
-        [SwaggerResponse(201, "The stop was created", typeof(CreateFullRouteResource))]
-        [SwaggerResponse(400, "The stop was not created")]
+        [SwaggerResponse(201, "The route was created", typeof(CreateFullRouteResource))]
+        [SwaggerResponse(400, "The route was not created")]
         public async Task<ActionResult> CreateRoute([FromBody] CreateFullRouteResource resource)
         {
             if (resource == null)
@@ -45,8 +45,29 @@ namespace Frock_backend.routes.Interface.REST
             return Ok(result);
         }
 
+        //Get all routes
+        [HttpGet]
+        [SwaggerOperation(
+            Summary = "Get all routes",
+            Description = "Get all routes in the system",
+            OperationId = "GetAllRoutes"
+            )]
+        [SwaggerResponse(200, "The routes were retrieved", typeof(IEnumerable<RouteAggregateResource>))]
+        [SwaggerResponse(404, "No routes found")]
+        public async Task<ActionResult<IEnumerable<RouteAggregateResource>>> GetAllRoutes()
+        {
+            GetAllRoutesQuery query = new GetAllRoutesQuery();
+            var routes = await routeQueryService.Handle(query); // Assuming this method exists in the service
+            if (routes == null || !routes.Any())
+            {
+                return NotFound("No routes found.");
+            }
+            var resources = routes.Select((routeAggregate) => RouteAggregateResourceFromResourceAssembler.ToResourceFromEntity(routeAggregate)).ToList();
+            return Ok(resources);
+        }
+
         /// <summary>
-        /// Creates a new stop.
+        /// Gets all routes by FkIdCompany.
         /// </summary>
         /// <param name="resource">The GetStopsBy resource</param>
         /// <returns>
@@ -74,7 +95,49 @@ namespace Frock_backend.routes.Interface.REST
             return Ok(resources);
         }
 
+        /// <summary>
+        /// Gets all routes by FkIdDistrict.
+        /// 
+        [HttpGet("district/{FkIdDistrict}")]
+        [SwaggerOperation(
+            Summary = "Get Routes By District Id",
+            Description = "Get routes by District Id",
+            OperationId = "GetRoutesByDistrictId"
+            )]
+        [SwaggerResponse(200, "The routes were retrieved", typeof(IEnumerable<RouteAggregateResource>))]
+        [SwaggerResponse(404, "No routes found")]
+        public async Task<ActionResult<IEnumerable<RouteAggregateResource>>> GetAllRoutesByDistrict(int FkIdDistrict)
+        {
+            GetAllRoutesByFkDistrictIdQuery query = new GetAllRoutesByFkDistrictIdQuery(FkIdDistrict);
+            var routes = await routeQueryService.Handle(query); // Assuming this method exists in the service
+            if (routes == null || !routes.Any())
+            {
+                return NotFound("No routes found.");
+            }
+            var resources = routes.Select((routeAggregate) => RouteAggregateResourceFromResourceAssembler.ToResourceFromEntity(routeAggregate)).ToList();
+            return Ok(resources);
+        }
 
+        //Get route by id
+        [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Get Route By Id",
+            Description = "Get route by Id",
+            OperationId = "GetRouteById"
+            )]
+        [SwaggerResponse(200, "The route was retrieved", typeof(RouteAggregateResource))]
+        [SwaggerResponse(404, "Route not found")]
+        public async Task<ActionResult<RouteAggregateResource>> GetRouteById(int id)
+        {
+            GetRouteByIdQuery query = new GetRouteByIdQuery(id);
+            var route = await routeQueryService.Handle(query); // Assuming this method exists in the service
+            if (route == null)
+            {
+                return NotFound("Route not found.");
+            }
+            var resource = RouteAggregateResourceFromResourceAssembler.ToResourceFromEntity(route);
+            return Ok(resource);
 
+        }
     }
 }

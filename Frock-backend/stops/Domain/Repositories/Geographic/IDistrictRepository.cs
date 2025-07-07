@@ -5,6 +5,6 @@ namespace Frock_backend.stops.Domain.Repositories.Geographic
 {
     public interface IDistrictRepository : IBaseStringRepository<District>
     {
-        Task<IEnumerable<District>> FindByFkIdProvinceAsync(string fkIdProvince);
+        Task<IEnumerable<District>> FindByFkIdProvinceAsync(int fkIdProvince);
     }
 }
