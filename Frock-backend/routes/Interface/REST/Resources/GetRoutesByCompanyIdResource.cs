@@ -2,7 +2,5 @@
 {
     public record GetRoutesByCompanyIdResource
     (
-        
-
     );
 }
