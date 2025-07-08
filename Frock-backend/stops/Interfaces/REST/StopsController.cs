@@ -41,6 +41,11 @@ namespace Frock_backend.stops.Interfaces.REST
             )]
         [SwaggerResponse(201, "The stop was created", typeof(StopResource))]
         [SwaggerResponse(400, "The stop was not created")]
+        [SwaggerResponse(500, "An error occurred while creating the stop")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StopResource))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<ActionResult> CreateStop([FromForm] CreateStopFormResource resource)
         {
             try
@@ -107,6 +112,7 @@ namespace Frock_backend.stops.Interfaces.REST
             OperationId = "GetAllStops")]
         [SwaggerResponse(200, "The stops were found", typeof(IEnumerable<StopResource>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "No stops found")]
+
         public async Task<IActionResult> GetAllStops()
         {
             var getAllStopsQuery = new GetAllStopsQuery();
@@ -183,6 +189,28 @@ namespace Frock_backend.stops.Interfaces.REST
             var resource = StopResourceFromEntityAssembler.ToResourceFromEntity(result);
             return Ok(resource);
         }
+
+        //get by name and company
+        [HttpGet("company/{FkIdCompany}/name/{Name}")]
+        [SwaggerOperation(
+            Summary = "Gets a stop by Company ID and name",
+            Description = "Gets a specific stop for a given Company ID and stop name",
+            OperationId = "GetStopByNameAndFkIdCompany")]
+        [SwaggerResponse(StatusCodes.Status200OK, "The stop was found", typeof(StopResource))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "The stop was not found for the given Company and name")]
+        public async Task<ActionResult> GetStopByNameAndFkIdCompany(int FkIdCompany, string Name)
+        {
+            var getStopByNameAndCompanyQuery = new GetStopByNameAndFkIdCompanyQuery(Name, FkIdCompany);
+            var result = await stopQueryService.Handle(getStopByNameAndCompanyQuery);
+            if (result is null)
+            {
+                return NotFound();
+            }
+            var resource = StopResourceFromEntityAssembler.ToResourceFromEntity(result);
+            return Ok(resource);
+        }
+
+
 
         [HttpDelete("{id}")]
         [SwaggerOperation(

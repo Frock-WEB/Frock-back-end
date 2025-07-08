@@ -54,5 +54,18 @@ namespace Frock_backend.stops.Domain.Services
         ///     The Stop object if found, or null otherwise
         /// </returns>
         Task<Stop?> Handle(GetStopByNameAndFkIdDistrictQuery query);
+
+        /// <summary>
+        /// Handle the GetStopByNameAndFkIdCompanyQuery.
+        /// </summary> 
+        /// <remarks>
+        ///     This method handles the GetStopByNameAndFkIdCompanyQuery. It returns the stop for the given name and fk_id_Company.
+        /// </remarks>
+        /// <param name="query">The GetStopByNameAndFkIdCompanyQuery query</param>
+        /// <returns>
+        ///     The Stop object if found, or null otherwise
+        /// </returns>
+        Task<Stop?> Handle(GetStopByNameAndFkIdCompanyQuery query);
+
     }
 }

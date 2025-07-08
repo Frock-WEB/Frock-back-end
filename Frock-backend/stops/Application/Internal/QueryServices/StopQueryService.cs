@@ -29,5 +29,11 @@ namespace Frock_backend.stops.Application.Internal.QueryServices
         {
             return await stopRepository.ListAsync();
         }
+
+        public async Task<Stop?> Handle(GetStopByNameAndFkIdCompanyQuery query)
+        {
+            return await stopRepository.FindByNameAndFkIdCompanyAsync(query.Name, query.FkIdCompany);
+
+        }
     }
 }

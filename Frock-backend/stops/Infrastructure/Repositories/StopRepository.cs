@@ -30,6 +30,10 @@ namespace Frock_backend.stops.Infrastructure.Repositories
                 .FirstOrDefaultAsync(f => f.Name == name && f.FkIdDistrict == fkIdDistrict);
         }
 
-
+        public async Task<Stop?> FindByNameAndFkIdCompanyAsync(string name, int fkIdCompany)
+        {
+            return await context.Set<Stop>()
+                .FirstOrDefaultAsync(f => f.Name == name && f.FkIdCompany == fkIdCompany);
+        }
     }
 }

@@ -23,15 +23,15 @@ namespace Frock_backend.stops.Application.Internal.CommandServices
         public async Task<Stop?> Handle(CreateStopCommand command)
         {
             var existingStop =
-                await stopRepository.FindByNameAndFkIdDistrictAsync(command.Name, command.FkIdDistrict);
+                await stopRepository.FindByNameAndFkIdCompanyAsync(command.Name, command.FkIdCompany);
             // Note: The XML doc for IStopCommandService.Handle(CreateStopCommand) suggests an upsert behavior.
             // The current code throws if it exists. This is a discrepancy.
             // Keeping the throw behavior as per the current code for this example.
             if (existingStop != null)
             {
-                // logger?.LogWarning("Create failed: Stop with name {StopName} already exists for District {DistrictId}.", command.Name, command.FkIdDistrict);
+                // logger?.LogWarning("Create failed: Stop with name {StopName} already exists for Company {CompanyId}.", command.Name, command.FkIdCompany);
                 // Consider a custom exception type for "already exists"
-                throw new Exception($"Stop with name '{command.Name}' already exists for District '{command.FkIdDistrict}'.");
+                throw new Exception($"Stop with name '{command.Name}' already exists for Company '{command.FkIdCompany}'.");
             }
 
             var newStop = new Stop(command);
