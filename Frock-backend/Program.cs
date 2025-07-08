@@ -216,7 +216,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://deft-tapioca-c27a9c.netlify.app/")//ajustar
+        policy.WithOrigins("http://localhost:5173", "https://deft-tapioca-c27a9c.netlify.app")//ajustar
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
