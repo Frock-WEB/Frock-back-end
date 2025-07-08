@@ -8,7 +8,7 @@
         public string EndTime { get; set; } // End time of the schedule
         public string DayOfWeek { get; set; } // Day of the week (e.g., "Monday", "Tuesday")
         public bool Enabled { get; set; } // Indicates if the schedule is enabled
-        public Schedule(string startTime, string endTime, string dayOfWeek, bool enabled    )
+        public Schedule(string startTime, string endTime, string dayOfWeek, bool enabled)
         {
             StartTime = startTime;
             EndTime = endTime;

@@ -29,9 +29,10 @@ namespace Frock_backend.routes.Application.Internal.CommandServices
                 return null; // Signal failure to the controller
             }
         }
-        public async Task<RouteAggregate?> Handle(UpdateRouteCommand command)
+        public async Task<RouteAggregate?> Handle(int idRoute,UpdateRouteCommand command)
         {
-            var route = await routeRepository.FindByIdAsync(command.IdRoute);
+            Console.WriteLine($"Updating route with ID: {idRoute}");
+            var route = await routeRepository.FindByIdAsync(idRoute);
             if (route == null)
             {
                 return null; // Route not found
@@ -49,7 +50,7 @@ namespace Frock_backend.routes.Application.Internal.CommandServices
                 return null; // Signal failure to the controller
             }
         }
-        public async void Handle(DeleteRouteCommand command)
+        public async Task Handle(DeleteRouteCommand command)
         {
             var route = await routeRepository.FindByIdAsync(command.idRoute);
             if (route == null)

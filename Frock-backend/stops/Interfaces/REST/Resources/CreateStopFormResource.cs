@@ -23,8 +23,9 @@ namespace Frock_backend.stops.Interfaces.REST.Resources
         
         [Required]
         public string Reference { get; set; } = string.Empty;
-        
+
         [Required]
         public int FkIdDistrict { get; set; }
+
     }
 }

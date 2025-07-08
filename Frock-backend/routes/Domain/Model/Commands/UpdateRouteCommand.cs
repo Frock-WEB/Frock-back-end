@@ -4,7 +4,6 @@ namespace Frock_backend.routes.Domain.Model.Commands
 {
     public record UpdateRouteCommand
     (
-        int IdRoute,
         double Price,
         int Duration, // in minutes
         int Frequency, // in minutes

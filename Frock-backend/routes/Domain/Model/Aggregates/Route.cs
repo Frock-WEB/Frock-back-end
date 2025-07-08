@@ -42,7 +42,6 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
         }
         public RouteAggregate(UpdateRouteCommand cm)
         {
-            this.Id = cm.IdRoute;
             this.Price = cm.Price;
             this.Duration = cm.Duration;
             this.Frequency = cm.Frequency;
@@ -55,7 +54,7 @@ namespace Frock_backend.routes.Domain.Model.Aggregates
             }
             foreach (var schedule in cm.Schedules)
             {
-                this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, true);
+                this.AddSchedule(schedule.StartTime, schedule.EndTime, schedule.DayOfWeek, schedule.Enabled);
             }
         }
         public RouteAggregate(DeleteRouteCommand cm)
